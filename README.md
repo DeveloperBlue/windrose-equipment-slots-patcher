@@ -1,6 +1,7 @@
 # Windrose - More Ring and Necklace Slots - Existing Character Patcher - v1.0
+[🛡️ View VirusTotal Scan Report](https://www.virustotal.com/gui/file/bd1f74e13c368736d08bddd8896bac6a32927b90d33b0aae32592cf3eea2d555)
 
-**This is not a mod. This is a tool for patching your existing Windrose characters to work with the existing Nexus mod [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350) mod by Baradrim, so you don't need to make a new character to use the mod**
+**This is not a mod.,bThis is a tool for patching your existing Windrose characters to work with the existing Nexus mod [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350) mod by Baradrim, so you don't need to make a new character to use the mod.**
 
 If you are creating a new character with the mod install, you do not need this patcher.
 
@@ -15,7 +16,7 @@ If you are creating a new character with the mod install, you do not need this p
 > Windrose is constantly updating and mods and tooling usually lag behind. Ensure you are taking the best steps to protect your saves.
 
 > [!IMPORTANT]
-> You must *temporarily* disable Steam Cloud Sync for Windrose before relaunching the game. When you launch the game, Steam pulls your old save from the cloud and overwrites the new patched save. You can and should re-enable it after you verify the patcher has worked.
+> You must *temporarily disable Steam Cloud Sync* for Windrose before relaunching the game. When you launch the game, Steam pulls your old save from the cloud and overwrites the new patched save. You can and should re-enable it after you verify the patcher has worked.
 >
 > In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"*.
 >
@@ -25,7 +26,7 @@ If you are creating a new character with the mod install, you do not need this p
 
 1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases)
 1. Disable Steam Cloud Sync
-2. Run it and follow the instructions
+2. Run the patcher and follow the instructions
 3. Launch the game and verify that you have the extra slots
 4. Close the game and re-enable Steam Cloud Sync
 
@@ -65,10 +66,15 @@ The compiled `windrose_mrns_patcher.exe` can be found in the `dist\` folder.
 ----
 # FAQs
 
-## How to backup my saves
+## How to backup my saves?
 Your saves can be found at  `%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\`
 
 I would create copies of the ``RocksDB_v2`` and ``RocksDB_v2_Backups`` folders. Note that Steam Cloud Sync modifies these folders, so keep your backups OUTSIDE of SavedProfiles.
+
+## How do I disable Steam Cloud Saves?
+In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"
+
+Note that after applying the patch, **launching the game**, and verifying that you see your slots, you should **re-enable Steam Cloud Saves**.
 
 ## How do I report a bug
 If you have discovered any bugs, feel free to leave an issue here on [GitHiub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues) or send an email over to ``contact@michaelrooplall.com``.
