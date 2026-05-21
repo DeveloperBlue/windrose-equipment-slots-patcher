@@ -56,8 +56,8 @@ cd windrose-mrns-existing-character-patcher
 # Install dependencies:
 pip install pyinstaller rocksdict
 
-# Build via the bundled spec (which includes checkpoint_zip):
-pyinstaller windrose_patch.spec
+# Build
+pyinstaller windrose_mrns_patcher.spec
 ```
 
 The compiled `windrose_mrns_patcher.exe` can be found in the `dist\` folder.

@@ -1,6 +1,17 @@
-"""
-Windrose - More Ring and Necklace Slots - Existing Character Patcher
-====================================================================
+from __future__ import annotations
+
+import os
+import re
+import sys
+from pathlib import Path
+
+from _version import __version__
+
+__version_display__ = f"v{__version__}"
+
+__doc__ = f"""
+Windrose - More Ring and Necklace Slots - Existing Character Patcher - {__version_display__}
+==========================================================================
 
 Patches EXISTING Windrose character saves so they work with Baradrim's
 "More Ring and Necklace Slots" mod.  This is not a replacement for that mod;
@@ -40,13 +51,7 @@ Usage:
     and prompts you to pick a character by in-game name.
 
     Or drag your character's save folder onto this script (or the .exe).
-"""
-from __future__ import annotations
-
-import os
-import re
-import sys
-from pathlib import Path
+""".strip()
 
 try:
     from rocksdict import DBCompressionType, Options, Rdict
@@ -141,7 +146,7 @@ def _print_banner() -> None:
         print(_c(border, _DIM))
 
     title = "  Windrose - More Ring and Necklace Slots"
-    subtitle = "  Existing Character Patcher"
+    subtitle = f"  Existing Character Patcher {__version_display__}"
     mod_line = (
         f"  {_c('Mod (Baradrim):', _BOLD, _YELLOW)}  "
         f"{_c(MOD_URL, _UNDERLINE, _CYAN)}"

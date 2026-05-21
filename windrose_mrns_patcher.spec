@@ -1,8 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import importlib.util
+from pathlib import Path
+
+_spec_dir = Path(SPECPATH)
+_version_path = _spec_dir / "_version.py"
+_version_spec = importlib.util.spec_from_file_location("_version", _version_path)
+_version_mod = importlib.util.module_from_spec(_version_spec)
+_version_spec.loader.exec_module(_version_mod)
+__version__ = _version_mod.__version__
 
 a = Analysis(
-    ['windrose_patch.py'],
+    ['windrose_mrns_patcher.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +31,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='windrose_mrns_patcher',
+    name=f'windrose_mrns_patcher_v{__version__}',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
