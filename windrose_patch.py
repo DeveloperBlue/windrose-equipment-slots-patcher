@@ -28,9 +28,11 @@ on every load, so after writing to the live DB we rebuild that ZIP via
 reverts the edit.
 
 Usage:
-    Drag your character's save folder onto this script (or the .exe).
-    The save folder is the one ending in your character's UUID, e.g.
-    .../RocksDB_v2/0.10.0/Players/A20A1BAF32E94A13DBB24BD4B9814EC8/
+    Run interactively (no arguments): discovers saves under
+    %LOCALAPPDATA%\\R5\\Saved\\SaveProfiles\\<STEAMID>\\RocksDB_v2\\<version>\\Players\\
+    and prompts you to pick a character by in-game name.
+
+    Or drag your character's save folder onto this script (or the .exe).
 """
 from __future__ import annotations
 
@@ -438,20 +440,194 @@ def get_player_name(value: bytes) -> str | None:
     return value[start + 4:start + 4 + n].rstrip(b"\x00").decode("utf-8", errors="replace")
 
 
-def find_save_folder(args: list[str]) -> str:
-    if len(args) >= 2:
-        cand = args[1].strip('"').strip("'")
-        if os.path.isdir(cand):
-            return cand
-        cand = os.path.normpath(cand)
-        if os.path.isdir(cand):
-            return cand
-    print("No folder was dragged onto the script.")
-    p = input("Paste the path to your character's save folder:\n> ").strip().strip('"')
-    if os.path.isdir(p):
-        return p
-    print(f"ERROR: '{p}' is not a directory.")
-    sys.exit(1)
+# ---------------------------------------------------------------------------
+# Save profile discovery (Windows: %LOCALAPPDATA%\R5\Saved\SaveProfiles\...)
+# ---------------------------------------------------------------------------
+
+_SAVE_PROFILES_SUFFIX = Path("R5") / "Saved" / "SaveProfiles"
+_ROCKSDB_V2 = "RocksDB_v2"
+_PLAYERS = "Players"
+
+
+def _save_profiles_root() -> Path | None:
+    local = os.environ.get("LOCALAPPDATA")
+    if not local:
+        return None
+    root = Path(local) / _SAVE_PROFILES_SUFFIX
+    return root if root.is_dir() else None
+
+
+def _is_character_db_dir(path: Path) -> bool:
+    return path.is_dir() and (path / "CURRENT").is_file()
+
+
+def _list_steam_profile_dirs(profiles_root: Path) -> list[Path]:
+    out: list[Path] = []
+    for entry in sorted(profiles_root.iterdir()):
+        if not entry.is_dir() or entry.name.startswith("."):
+            continue
+        if (entry / _ROCKSDB_V2).is_dir():
+            out.append(entry)
+    return out
+
+
+def _discover_character_dirs(steam_profile: Path) -> list[Path]:
+    """Newest RocksDB_v2 version wins when the same character id appears twice."""
+    rocks = steam_profile / _ROCKSDB_V2
+    if not rocks.is_dir():
+        return []
+    by_id: dict[str, Path] = {}
+    for version_dir in sorted(rocks.iterdir()):
+        if not version_dir.is_dir():
+            continue
+        players = version_dir / _PLAYERS
+        if not players.is_dir():
+            continue
+        for char_dir in sorted(players.iterdir()):
+            if _is_character_db_dir(char_dir):
+                by_id[char_dir.name] = char_dir
+    return list(by_id.values())
+
+
+def _character_display_name(folder: Path) -> str:
+    """Best-effort in-game name from the character RocksDB (read-only peek)."""
+    db, cf = open_db_safe(str(folder))
+    if cf is None:
+        return folder.name
+    try:
+        for v in cf.values():
+            if isinstance(v, (bytes, bytearray)) and b"Inventory.Module.Jewelry" in v:
+                return get_player_name(bytes(v)) or folder.name
+    finally:
+        cf.close()
+        db.close()
+    return folder.name
+
+
+def _format_char_id(char_id: str, width: int = 32) -> str:
+    if len(char_id) <= width:
+        return char_id
+    return char_id[: width - 3] + "..."
+
+
+def _pick_character_interactive(
+    characters: list[tuple[Path, str, str]],
+    *,
+    steam_id: str,
+    version_hint: str | None,
+) -> Path | None:
+    """`characters` is (folder, display_name, char_id). Returns chosen folder or None."""
+    if not characters:
+        return None
+    if len(characters) == 1:
+        folder, name, cid = characters[0]
+        print(f"\n  Using character: {name}  ({_format_char_id(cid)})")
+        return folder
+
+    print()
+    print("  Characters on this profile:")
+    print("  " + "-" * 58)
+    for i, (_, name, cid) in enumerate(characters, start=1):
+        print(f"    [{i}]  {name:<24}  {_format_char_id(cid)}")
+    print("  " + "-" * 58)
+    if version_hint:
+        print(f"  Save version: {version_hint}")
+    print(f"  Steam profile: {steam_id}")
+    print()
+
+    while True:
+        raw = input(
+            f"  Select character [1-{len(characters)}], or Q to quit: "
+        ).strip().lower()
+        if raw in ("q", "quit", "exit"):
+            return None
+        if raw.isdigit():
+            idx = int(raw)
+            if 1 <= idx <= len(characters):
+                return characters[idx - 1][0]
+        print(f"    Enter a number from 1 to {len(characters)}, or Q.")
+
+
+def _version_for_character_folder(char_dir: Path) -> str | None:
+    """.../RocksDB_v2/<version>/Players/<id> -> version string."""
+    if char_dir.parent.name == _PLAYERS:
+        return char_dir.parent.parent.name
+    return None
+
+
+def discover_characters_interactive() -> str | None:
+    """Locate Windrose saves under AppData and let the user pick a character."""
+    profiles_root = _save_profiles_root()
+    if profiles_root is None:
+        print("  Could not find Windrose save profiles under %LOCALAPPDATA%.")
+        print(f"  Expected: ...\\{_SAVE_PROFILES_SUFFIX}")
+        return None
+
+    steam_dirs = _list_steam_profile_dirs(profiles_root)
+    if not steam_dirs:
+        print(f"  No Steam save profiles found in:\n    {profiles_root}")
+        return None
+
+    if len(steam_dirs) > 1:
+        print(
+            f"\n  Note: {len(steam_dirs)} Steam profiles found; using the first "
+            f"({steam_dirs[0].name})."
+        )
+
+    steam_dir = steam_dirs[0]
+    char_dirs = _discover_character_dirs(steam_dir)
+    if not char_dirs:
+        print(f"  No character save folders under:\n    {steam_dir / _ROCKSDB_V2}")
+        return None
+
+    print("  Scanning character saves for names...")
+    entries: list[tuple[Path, str, str]] = []
+    versions: set[str] = set()
+    for folder in char_dirs:
+        name = _character_display_name(folder)
+        cid = folder.name
+        ver = _version_for_character_folder(folder)
+        if ver:
+            versions.add(ver)
+        entries.append((folder, name, cid))
+    entries.sort(key=lambda e: e[1].casefold())
+
+    version_hint = max(versions) if len(versions) == 1 else (
+        ", ".join(sorted(versions)) if versions else None
+    )
+    chosen = _pick_character_interactive(
+        entries, steam_id=steam_dir.name, version_hint=version_hint
+    )
+    return str(chosen) if chosen is not None else None
+
+
+def _path_from_argv(args: list[str]) -> str | None:
+    if len(args) < 2:
+        return None
+    cand = os.path.normpath(args[1].strip('"').strip("'"))
+    return cand if os.path.isdir(cand) else None
+
+
+def resolve_character_folder(args: list[str]) -> str | None:
+    """Drag/drop path, auto-discovery, or manual paste. None if the user quits."""
+    explicit = _path_from_argv(args)
+    if explicit is not None:
+        return explicit
+
+    print("  No save folder on the command line — searching AppData...")
+    folder = discover_characters_interactive()
+    if folder is not None:
+        return folder
+
+    print()
+    print("  Paste the path to your character's save folder (or Q to quit):")
+    while True:
+        p = input("  > ").strip().strip('"').strip("'")
+        if p.lower() in ("q", "quit", "exit"):
+            return None
+        if os.path.isdir(p):
+            return os.path.normpath(p)
+        print(f"    '{p}' is not a directory. Try again or enter Q.")
 
 
 def validate_db_folder(folder: str) -> None:
@@ -471,6 +647,23 @@ def _rocksdb_options() -> Options:
     return opts
 
 
+def open_db_safe(folder: str):
+    """Open the DB for read/write. Returns (db, cf) or (None, None) on failure."""
+    base = _rocksdb_options()
+    try:
+        cfs = Rdict.list_cf(folder, base)
+    except Exception:
+        return None, None
+    if PLAYER_CF_NAME not in cfs:
+        return None, None
+    cf_opts = {n: _rocksdb_options() for n in cfs}
+    try:
+        db = Rdict(folder, options=base, column_families=cf_opts)
+    except Exception:
+        return None, None
+    return db, db.get_column_family(PLAYER_CF_NAME)
+
+
 def open_db(folder: str):
     base = _rocksdb_options()
     try:
@@ -485,6 +678,15 @@ def open_db(folder: str):
     cf_opts = {n: _rocksdb_options() for n in cfs}
     db = Rdict(folder, options=base, column_families=cf_opts)
     return db, db.get_column_family(PLAYER_CF_NAME)
+
+
+def find_jewelry_character(cf) -> tuple[object, bytes, str] | None:
+    """First R5BLPlayer value that contains the Jewelry module."""
+    for k, v in cf.items():
+        if isinstance(v, (bytes, bytearray)) and b"Inventory.Module.Jewelry" in v:
+            name = get_player_name(v) or "<unknown>"
+            return k, bytes(v), name
+    return None
 
 
 def prompt_count(label: str, current: int) -> int:
@@ -518,36 +720,28 @@ def main() -> None:
     print("=" * 62)
     print()
 
-    folder = os.path.normpath(find_save_folder(sys.argv))
+    folder = resolve_character_folder(sys.argv)
+    if folder is None:
+        print("\nAborted.")
+        return
+
+    folder = os.path.normpath(folder)
     validate_db_folder(folder)
     db_dir = Path(folder)
     save_root = db_dir.parent.parent  # .../RocksDB_v2/<version>
 
-    print("Opening character save...")
+    print(f"\n  Save folder:\n    {folder}")
+    print("\n  Opening character save...")
     db, cf = open_db(folder)
 
-    target_key = None
-    target_value = None
-    target_name = None
-    for k, v in cf.items():
-        if not (isinstance(v, (bytes, bytearray)) and b"Inventory.Module.Jewelry" in v):
-            continue
-        name = get_player_name(v) or "<unknown>"
-        print(f"\nFound character: {name}")
-        ans = input("  Patch this character?  (Y / N / Q to quit) [Y]: ").strip().lower()
-        if ans == "q":
-            print("Aborted.")
-            db.close()
-            return
-        if ans == "n":
-            continue
-        target_key, target_value, target_name = k, bytes(v), name
-        break
-
-    if target_key is None:
-        print("\nNo (more) characters to patch.")
+    found = find_jewelry_character(cf)
+    if found is None:
+        print("\n  ERROR: No Jewelry module found in this character save.")
+        cf.close()
         db.close()
         return
+    target_key, target_value, target_name = found
+    print(f"  Character: {target_name}")
 
     try:
         info = locate_jewelry(target_value)

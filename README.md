@@ -12,18 +12,14 @@ before the mod was installed (or before this number of slots was desired).
    should see the additional jewelry slots.
 2. Quit the game completely (the patcher won't be able to open the save while
    the game is running).
-3. Locate your character's save folder:
+3. Run `windrose_patch.exe` (or `python windrose_patch.py`). With no arguments
+   it finds saves under
+   `%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\RocksDB_v2\<version>\Players\`
+   and shows a numbered list of your characters by in-game name. Pick one,
+   then enter the ring and necklace slot counts you want.
 
-   ```
-   C:\Users\<USER>\AppData\Local\R5\Saved\SaveProfiles\<STEAM_USER_ID>\RocksDB_v2\0.10.0\Players\<WINDROSE_CHARACTER_ID>
-   ```
-
-   If you have several Windrose characters, double-check the folder you choose
-   matches the one you actually want to patch (the patcher prints the
-   character name once it opens the save).
-4. Drag that folder onto `windrose_patch.exe` (or pass the path on the command
-   line). Confirm the character name when prompted and type in the number of
-   ring and necklace slots you want.
+   You can still drag a specific character folder onto the exe, or pass its
+   path on the command line, if you prefer.
 
 ## How it works
 
