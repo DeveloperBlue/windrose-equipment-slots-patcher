@@ -23,6 +23,9 @@ If you are creating a new character with the mod install, you do not need this p
 
 ### Running the patcher
 
+> [!NOTE]
+> When the patcher asks for ring and necklace slot counts, enter values that **match the mod variant you installed** from Nexus (for example: 2 ring + 2 necklace, 4 ring + 4 necklace, or another combination offered by the mod).
+
 1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases)
 1. Disable Steam Cloud Sync
 2. Run the patcher and follow the instructions
@@ -34,6 +37,8 @@ I apologize if Chrome, Windows Defender, or your Antivirus flags the file as a v
 [🛡️ View VirusTotal Scan Report](https://www.virustotal.com/gui/file/bd1f74e13c368736d08bddd8896bac6a32927b90d33b0aae32592cf3eea2d555)
 
 ----
+
+If you've enjoyed this mod, want to see it maintained, or support any of my other projects, consider BuyMeACoffee!
 
 <p align="left">
     <a href="https://buymeacoffee.com/michaelrooplall" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>

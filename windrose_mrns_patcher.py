@@ -854,6 +854,8 @@ def main() -> None:
     if live_rings != bp_rings or live_necks != bp_necks:
         print("    (blueprint differs from live — game may reset on next save)")
     print()
+    print("  Enter counts that match the mod variant you installed on Nexus")
+    print()
 
     new_rings = prompt_count("Ring slots", max(live_rings, bp_rings))
     new_necks = prompt_count("Necklace slots", max(live_necks, bp_necks))
