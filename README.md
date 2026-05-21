@@ -1,7 +1,6 @@
 # Windrose - More Ring and Necklace Slots - Existing Character Patcher - v1.0
-[🛡️ View VirusTotal Scan Report](https://www.virustotal.com/gui/file/bd1f74e13c368736d08bddd8896bac6a32927b90d33b0aae32592cf3eea2d555)
 
-**This is not a mod.,bThis is a tool for patching your existing Windrose characters to work with the existing Nexus mod [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350) mod by Baradrim, so you don't need to make a new character to use the mod.**
+**This is not a mod. This is a tool for patching your existing Windrose characters to work with the existing Nexus mod [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350) mod by Baradrim, so you don't need to make a new character to use the mod.**
 
 If you are creating a new character with the mod install, you do not need this patcher.
 
@@ -32,11 +31,10 @@ If you are creating a new character with the mod install, you do not need this p
 
 I apologize if Chrome, Windows Defender, or your Antivirus flags the file as a virus. This is just the nature of all unsigned *.exe files. If this is not acceptable for you, consider building from source yourself.
 
-<VIRUS TOTAL> <MICROSOFT VIRUS>
+[🛡️ View VirusTotal Scan Report](https://www.virustotal.com/gui/file/bd1f74e13c368736d08bddd8896bac6a32927b90d33b0aae32592cf3eea2d555)
 
 ----
 
-<br><br>
 <p align="left">
     <a href="https://buymeacoffee.com/michaelrooplall" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 </p>
