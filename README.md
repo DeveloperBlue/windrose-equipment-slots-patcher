@@ -7,13 +7,12 @@ If you are creating a new character with the mod install, you do not need this p
 > [!NOTE]
 > Ensure you have [More Ring and Necklace Slots mod](https://www.nexusmods.com/windrose/mods/350) by Baradrim installed. You can double check that it is working by creating a new character, and checking in the tutorial to see if you have the extra slots.
 
-## How to Use
-
 > [!CAUTION]
 > It is **HIGHLY RECOMMENDED** that you **create a backup of your save folder**. Scroll down to see how. 
 >
 > Windrose is constantly updating and mods and tooling usually lag behind. Ensure you are taking the best steps to protect your saves.
 
+## How to Use
 > [!IMPORTANT]
 > You must *temporarily disable Steam Cloud Sync* for Windrose before relaunching the game. When you launch the game, Steam pulls your old save from the cloud and overwrites the new patched save. You can and should re-enable it after you verify the patcher has worked.
 >
@@ -21,10 +20,10 @@ If you are creating a new character with the mod install, you do not need this p
 >
 > If Steam asks about a conflict, pick "Use Local files".
 
-### Running the patcher
-
 > [!NOTE]
 > When the patcher asks for ring and necklace slot counts, enter values that **match the mod variant you installed** from Nexus (for example: 2 ring + 2 necklace, 4 ring + 4 necklace, or another combination offered by the mod).
+
+### Running the patcher
 
 1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases)
 1. Disable Steam Cloud Sync
