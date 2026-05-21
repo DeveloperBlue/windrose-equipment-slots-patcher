@@ -4,6 +4,8 @@
 
 If you are creating a new character with the mod installed, you do not need this patcher.
 
+> The **+g** version of this tool also allows you to have 2 hand slots for 2 gloves.
+
 ## Preview
 
 <table>
@@ -100,6 +102,9 @@ If you have discovered any bugs, feel free to leave an issue here on [GitHub](ht
 
 ## Can I have two hands slots / equip two gloves
 Yes, get the experimental version with **+g** from the [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases). This will let you have a 4-set bonus and 2-set bonus active at the same time.
+
+## What happens if I use this patcher without the mod installed?
+I haven't tested this, but I believe you actually don't need the mod to use the patcher. The only downside is that new characters will not auttomatically be created with the extra slots.
 
 ## Undoing the patch
 
