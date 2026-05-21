@@ -71,6 +71,13 @@ SLOT_MAX = 10
 FORCE_DELETE_CONFIRM = "DELETE"
 
 
+def _clear_screen() -> None:
+    if sys.platform == "win32":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+
 # ---------------------------------------------------------------------------
 # Minimal BSON reader
 # ---------------------------------------------------------------------------
@@ -522,27 +529,19 @@ def _format_char_id(char_id: str, width: int = 32) -> str:
 
 def _pick_character_interactive(
     characters: list[tuple[Path, str, str]],
-    *,
-    steam_id: str,
-    version_hint: str | None,
 ) -> Path | None:
     """`characters` is (folder, display_name, char_id). Returns chosen folder or None."""
     if not characters:
         return None
     if len(characters) == 1:
-        folder, name, cid = characters[0]
-        print(f"\n  Using character: {name}  ({_format_char_id(cid)})")
-        return folder
+        return characters[0][0]
 
     print()
-    print("  Characters on this profile:")
+    print("  Characters:")
     print("  " + "-" * 58)
     for i, (_, name, cid) in enumerate(characters, start=1):
         print(f"    [{i}]  {name:<24}  {_format_char_id(cid)}")
     print("  " + "-" * 58)
-    if version_hint:
-        print(f"  Save version: {version_hint}")
-    print(f"  Steam profile: {steam_id}")
     print()
 
     while True:
@@ -554,15 +553,9 @@ def _pick_character_interactive(
         if raw.isdigit():
             idx = int(raw)
             if 1 <= idx <= len(characters):
+                _clear_screen()
                 return characters[idx - 1][0]
         print(f"    Enter a number from 1 to {len(characters)}, or Q.")
-
-
-def _version_for_character_folder(char_dir: Path) -> str | None:
-    """.../RocksDB_v2/<version>/Players/<id> -> version string."""
-    if char_dir.parent.name == _PLAYERS:
-        return char_dir.parent.parent.name
-    return None
 
 
 def discover_characters_interactive() -> str | None:
@@ -578,36 +571,19 @@ def discover_characters_interactive() -> str | None:
         print(f"  No Steam save profiles found in:\n    {profiles_root}")
         return None
 
-    if len(steam_dirs) > 1:
-        print(
-            f"\n  Note: {len(steam_dirs)} Steam profiles found; using the first "
-            f"({steam_dirs[0].name})."
-        )
-
     steam_dir = steam_dirs[0]
     char_dirs = _discover_character_dirs(steam_dir)
     if not char_dirs:
         print(f"  No character save folders under:\n    {steam_dir / _ROCKSDB_V2}")
         return None
 
-    print("  Scanning character saves for names...")
     entries: list[tuple[Path, str, str]] = []
-    versions: set[str] = set()
     for folder in char_dirs:
         name = _character_display_name(folder)
-        cid = folder.name
-        ver = _version_for_character_folder(folder)
-        if ver:
-            versions.add(ver)
-        entries.append((folder, name, cid))
+        entries.append((folder, name, folder.name))
     entries.sort(key=lambda e: e[1].casefold())
 
-    version_hint = max(versions) if len(versions) == 1 else (
-        ", ".join(sorted(versions)) if versions else None
-    )
-    chosen = _pick_character_interactive(
-        entries, steam_id=steam_dir.name, version_hint=version_hint
-    )
+    chosen = _pick_character_interactive(entries)
     return str(chosen) if chosen is not None else None
 
 
@@ -624,7 +600,6 @@ def resolve_character_folder(args: list[str]) -> str | None:
     if explicit is not None:
         return explicit
 
-    print("  No save folder on the command line — searching AppData...")
     folder = discover_characters_interactive()
     if folder is not None:
         return folder
@@ -725,9 +700,7 @@ def save_pre_patch_backup(db_dir: Path, value: bytes) -> Path | None:
 
 
 def main() -> None:
-    print("=" * 62)
-    print("  Windrose — More Ring and Necklace Slots — Existing Character")
-    print("=" * 62)
+    print("  Windrose — More Ring and Necklace Slots")
     print()
 
     folder = resolve_character_folder(sys.argv)
@@ -740,8 +713,6 @@ def main() -> None:
     db_dir = Path(folder)
     save_root = db_dir.parent.parent  # .../RocksDB_v2/<version>
 
-    print(f"\n  Save folder:\n    {folder}")
-    print("\n  Opening character save...")
     db, cf = open_db(folder)
 
     found = find_jewelry_character(cf)
@@ -751,7 +722,6 @@ def main() -> None:
         db.close()
         return
     target_key, target_value, target_name = found
-    print(f"  Character: {target_name}")
 
     try:
         info = locate_jewelry(target_value)
@@ -765,12 +735,16 @@ def main() -> None:
     bp_rings = read_int32(target_value, info["bp_ring_count_pos"])
     bp_necks = read_int32(target_value, info["bp_neck_count_pos"])
 
-    print(f"\nCurrent jewelry layout for {target_name}:")
-    print(f"  Ring     — live slots: {live_rings}   blueprint: {bp_rings}")
-    print(f"  Necklace — live slots: {live_necks}   blueprint: {bp_necks}")
+    _clear_screen()
+    print("  Windrose — More Ring and Necklace Slots")
+    print()
+    print(f"  Character: {target_name}")
+    print()
+    print("  Current slots:")
+    print(f"    Ring     — {live_rings}  (blueprint {bp_rings})")
+    print(f"    Necklace — {live_necks}  (blueprint {bp_necks})")
     if live_rings != bp_rings or live_necks != bp_necks:
-        print("  (blueprint and live counts disagree — game will reset to live "
-              "count on next save)")
+        print("    (blueprint differs from live — game may reset on next save)")
     print()
 
     new_rings = prompt_count("Ring slots", max(live_rings, bp_rings))
@@ -800,7 +774,6 @@ def main() -> None:
                 return
             force_delete = True
 
-    print("\nBuilding patched record...")
     try:
         new_value = patch_player_value(
             target_value, new_rings, new_necks,
@@ -811,12 +784,7 @@ def main() -> None:
         db.close()
         return
 
-    bak = save_pre_patch_backup(db_dir, target_value)
-    if bak is not None:
-        print(f"  Saved pre-patch backup: {bak.name}")
-
-    print(f"  Writing patched value ({len(new_value)} bytes, "
-          f"delta {len(new_value) - len(target_value):+d})...")
+    save_pre_patch_backup(db_dir, target_value)
     cf[target_key] = new_value
     db.flush()
     try:
@@ -827,18 +795,13 @@ def main() -> None:
     cf.close()
     db.close()
 
-    print("\nRebuilding authoritative checkpoint backup ZIP...")
     try:
         update_checkpoint_zip(save_root, db_dir)
-        print("  Done.  The patch will now survive the next game launch.")
     except Exception as e:
-        print(f"  WARNING: failed to rebuild checkpoint ZIP: {e}")
-        print("           Your live DB is patched, but the next game launch")
-        print("           may revert it.  Please report this error.")
+        print(f"\n  WARNING: checkpoint backup failed: {e}")
+        print("           The live save is patched, but the next launch may revert it.")
 
-    print("\n" + "=" * 62)
-    print("Patch complete.")
-    print("=" * 62)
+    print("\n  Patch complete.")
     input("\nPress Enter to exit...")
 
 
