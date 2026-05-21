@@ -2,7 +2,7 @@
 
 **This is not a mod. This is a tool for patching your existing Windrose characters to work with the existing Nexus mod [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350) mod by Baradrim, so you don't need to make a new character to use the mod.**
 
-If you are creating a new character with the mod install, you do not need this patcher.
+If you are creating a new character with the mod installed, you do not need this patcher.
 
 ## Preview
 
@@ -26,7 +26,7 @@ If you are creating a new character with the mod install, you do not need this p
 > [!CAUTION]
 > It is **HIGHLY RECOMMENDED** that you **create a backup of your save folder**. Scroll down to see how. 
 >
-> Windrose is constantly updating and mods and tooling usually lag behind. Ensure you are taking the best steps to protect your saves.
+> Windrose is constantly updating; mods and tooling usually lag behind. Ensure you are taking the best steps to protect your saves.
 
 ## How to Use
 > [!IMPORTANT]
@@ -41,13 +41,14 @@ If you are creating a new character with the mod install, you do not need this p
 
 ### Running the patcher
 
+0. Ensure the game is closed
 1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases)
 2. Disable Steam Cloud Sync.<br/>In Steam → right-click Windrose → Properties → General → uncheck "Keep game saves in the Steam Cloud".
 3. Run the patcher and follow the instructions
 4. Launch the game and verify that you have the extra slots
 5. Close the game and re-enable Steam Cloud Sync
 
-I apologize if Chrome, Windows Defender, or your Antivirus flags the file as a virus. This is just the nature of all unsigned *.exe files. If this is not acceptable for you, consider building from source yourself.
+I apologize if Chrome, Windows Defender, or your antivirus flags the file. This is just the nature of all unsigned *.exe files. If this is not an acceptable risk, consider building from source yourself.
 
 [🛡️ View VirusTotal Scan Report](https://www.virustotal.com/gui/file-analysis/N2JiYTI0ODRjMzgwYWE3ZWUxNWMzOTA4NDZhNjhlMTg6MTc3OTM1MzA1Ng==)
 
@@ -87,7 +88,7 @@ The compiled `windrose_mrns_patcher.exe` can be found in the `dist\` folder.
 ## How to backup my saves?
 Your saves can be found at  `%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\`
 
-I would create copies of the ``RocksDB_v2`` and ``RocksDB_v2_Backups`` folders. Note that Steam Cloud Sync modifies these folders, so keep your backups OUTSIDE of SavedProfiles.
+Create a copy of ``RocksDB_v2`` and ``RocksDB_v2_Backups`` folders and store them somewhere (e.g. your Documents folder). Do not leave the copy in the same folder as the source as the Steam Cloud sync could pick them up and delete them.
 
 ## How do I disable Steam Cloud Saves?
 In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"
