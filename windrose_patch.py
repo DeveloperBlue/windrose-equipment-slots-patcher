@@ -68,6 +68,7 @@ BACK_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Backpac
 
 SLOT_MIN = 1
 SLOT_MAX = 10
+FORCE_DELETE_CONFIRM = "DELETE"
 
 
 # ---------------------------------------------------------------------------
@@ -319,10 +320,24 @@ def _retag_slot_element(template_bytes: bytes, new_index_name: str,
     return bytes(out)
 
 
-def _build_live_array(buf: bytes, info: dict, new_ring: int, new_neck: int):
+def _format_blocking_slots_message(blocking: list[tuple[str, dict]]) -> str:
+    lines = [
+        f"  - {kind} slot (live index {s['index_name'].decode('ascii', errors='replace')}) "
+        f"still has an equipped item"
+        for kind, s in blocking
+    ]
+    return (
+        "Cannot reduce slot count — the following slots still hold "
+        "equipped items:\n" + "\n".join(lines)
+        + "\nUnequip them in-game first, save, exit, and re-run the patcher."
+    )
+
+
+def _build_live_array(buf: bytes, info: dict, new_ring: int, new_neck: int,
+                      *, force_delete_equipped: bool = False):
     """Return (new_array_bytes, blocking_items).  If blocking_items is
     non-empty the caller should NOT splice — the user asked us to remove
-    slots that still contain equipped items."""
+    slots that still contain equipped items (unless force_delete_equipped)."""
     slots = info["live_slots"]
     rings = [s for s in slots if s["kind"] == "ring"]
     necks = [s for s in slots if s["kind"] == "neck"]
@@ -344,7 +359,7 @@ def _build_live_array(buf: bytes, info: dict, new_ring: int, new_neck: int):
         for s in necks[new_neck:]:
             if s["has_item"]:
                 blocking.append(("Necklace", s))
-    if blocking:
+    if blocking and not force_delete_equipped:
         return None, blocking
 
     ring_template = bytes(buf[rings[0]["elem_start"]:rings[0]["elem_end"]])
@@ -374,24 +389,19 @@ def _build_live_array(buf: bytes, info: dict, new_ring: int, new_neck: int):
 # ---------------------------------------------------------------------------
 
 
-def patch_player_value(value: bytes, new_ring: int, new_neck: int) -> bytes:
+def patch_player_value(value: bytes, new_ring: int, new_neck: int,
+                       *, force_delete_equipped: bool = False) -> bytes:
     """Return new bytes for the character record with Ring/Necklace counts
     set to `new_ring`/`new_neck`.  Raises RuntimeError if the requested
-    shrink would discard an equipped item."""
+    shrink would discard an equipped item (unless force_delete_equipped)."""
     info = locate_jewelry(value)
 
-    new_array, blocking = _build_live_array(value, info, new_ring, new_neck)
+    new_array, blocking = _build_live_array(
+        value, info, new_ring, new_neck,
+        force_delete_equipped=force_delete_equipped,
+    )
     if blocking:
-        lines = [
-            f"  - {kind} slot (live index {s['index_name'].decode('ascii', errors='replace')}) "
-            f"still has an equipped item"
-            for kind, s in blocking
-        ]
-        raise RuntimeError(
-            "Cannot reduce slot count — the following slots still hold "
-            "equipped items:\n" + "\n".join(lines)
-            + "\nUnequip them in-game first, save, exit, and re-run the patcher."
-        )
+        raise RuntimeError(_format_blocking_slots_message(blocking))
 
     out = bytearray(value)
     # Step 1: blueprint CountSlots updates (no size change, do these first).
@@ -772,9 +782,30 @@ def main() -> None:
         db.close()
         return
 
+    shrinking = new_rings < live_rings or new_necks < live_necks
+    force_delete = False
+    if shrinking:
+        _, blocking = _build_live_array(
+            target_value, info, new_rings, new_necks,
+        )
+        if blocking:
+            print(f"\n{_format_blocking_slots_message(blocking)}")
+            print(
+                f"\n  To delete those equipped items and remove the slots anyway,"
+                f'\n  type {FORCE_DELETE_CONFIRM} and press Enter (anything else cancels):'
+            )
+            if input("  > ").strip() != FORCE_DELETE_CONFIRM:
+                print("\nAborted.")
+                db.close()
+                return
+            force_delete = True
+
     print("\nBuilding patched record...")
     try:
-        new_value = patch_player_value(target_value, new_rings, new_necks)
+        new_value = patch_player_value(
+            target_value, new_rings, new_necks,
+            force_delete_equipped=force_delete,
+        )
     except Exception as e:
         print(f"\nERROR: {e}")
         db.close()

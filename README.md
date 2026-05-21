@@ -53,7 +53,9 @@ survives.
 
 Equipped items in your existing ring/necklace slot are preserved. If you
 later run the patcher to *reduce* the number of slots, it will refuse to
-delete any slot that still has an item in it; unequip first, then re-run.
+delete any slot that still has an item in it unless you confirm: type
+`DELETE` when prompted to discard those items and continue (otherwise
+unequip in-game first, save, exit, and re-run).
 
 ## Building from source
 
