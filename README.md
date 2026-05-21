@@ -96,7 +96,10 @@ In **Steam** → right-click Windrose → Properties → General → uncheck *"K
 Note that after applying the patch, **launching the game**, and verifying that you see your slots, you should **re-enable Steam Cloud Saves**.
 
 ## How do I report a bug
-If you have discovered any bugs, feel free to leave an issue here on [GitHiub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues) or send an email over to ``contact@michaelrooplall.com``.
+If you have discovered any bugs, feel free to leave an issue here on [GitHub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues) or send an email over to ``contact@michaelrooplall.com``.
+
+## Can I have two hands slots / equip two gloves
+Yes, get the experimental version with **+g** from the [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases). This will let you have a 4-set bonus and 2-set bonus active at the same time.
 
 ## Undoing the patch
 
