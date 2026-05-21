@@ -21,21 +21,22 @@ the mod should remain installed for the extra slots to function in-game.
 * Patcher:   https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher
 
 The save profile is a RocksDB database keyed under the `R5BLPlayer` column
-family.  Each character's value is a BSON document tree.  The Jewelry module
-inside that tree has two parallel views that the game cross-checks on load:
+family.  Each character's value is a BSON document tree.  The Jewelry and
+Equipment modules each have two parallel views that the game cross-checks
+on load:
 
-    ModuleParams.Slots  - blueprint  (one entry per slot TYPE: Ring,
-                                      Necklace, Backpack)
+    ModuleParams.Slots  - blueprint  (one entry per slot TYPE)
     Slots               - live array (one entry per physical SLOT, with a
                                       unique SlotId, SlotParams path, and
                                       an ItemsStack)
 
 Editing only the blueprint `CountSlots` integers is not enough: at next save
-the game notices "blueprint says 4 rings, but I only see 1 live ring slot"
-and rewrites the blueprint back to 1.  This patcher walks the actual BSON
-tree, edits the blueprint, AND grows the live `Slots` array by cloning the
-empty Ring/Necklace slot template, renumbering element indices and
-`SlotId`s, and recomputing every parent sub-document's size prefix.
+the game notices a blueprint/live mismatch and rewrites the blueprint back.
+This patcher walks the actual BSON tree, edits the blueprint, AND grows the
+live `Slots` array by cloning empty slot templates, renumbering element
+indices and `SlotId`s, and recomputing every parent sub-document's size
+prefix.  Ring/Necklace slots live in the Jewelry module; Hands slots live in
+the Equipment module.
 
 The game also restores the live RocksDB from a checkpoint ZIP at
 
@@ -75,12 +76,20 @@ except ImportError:
 
 PLAYER_CF_NAME = "R5BLPlayer"
 JEWELRY_TAG = "Inventory.Module.Jewelry"
+EQUIPMENT_TAG = "Inventory.Module.Equipment"
 RING_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Ring.DA_BL_Slot_Equipment_Ring"
 NECK_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Necklace.DA_BL_Slot_Equipment_Necklace"
 BACK_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Backpack.DA_BL_Slot_Equipment_Backpack"
+HEAD_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Head.DA_BL_Slot_Equipment_Head"
+TORSO_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Torso.DA_BL_Slot_Equipment_Torso"
+LEGS_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Legs.DA_BL_Slot_Equipment_Legs"
+HANDS_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Hands.DA_BL_Slot_Equipment_Hands"
+BOOTS_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Boots.DA_BL_Slot_Equipment_Boots"
 
 SLOT_MIN = 1
 SLOT_MAX = 10
+HANDS_SLOT_MIN = 1
+HANDS_SLOT_MAX = 2
 FORCE_DELETE_CONFIRM = "DELETE"
 
 MOD_URL = "https://www.nexusmods.com/windrose/mods/350"
@@ -403,6 +412,90 @@ def locate_jewelry(buf: bytes) -> dict:
     return found
 
 
+def _classify_equipment_slot_path(spath: str) -> str | None:
+    if spath == HEAD_PATH: return "head"
+    if spath == TORSO_PATH: return "torso"
+    if spath == LEGS_PATH: return "legs"
+    if spath == HANDS_PATH: return "hands"
+    if spath == BOOTS_PATH: return "boots"
+    return None
+
+
+def locate_equipment(buf: bytes) -> dict:
+    """Walk the BSON tree and return information about the Equipment module."""
+    found: dict = {}
+
+    def descend(doc_start: int, chain: list[int]) -> bool:
+        for t, name, vpos, vend in iter_elements(buf, doc_start):
+            if t not in (BT_SUBDOC, BT_ARRAY):
+                continue
+            if t == BT_SUBDOC:
+                mp = find_field(buf, vpos, "ModuleParams")
+                if mp and mp[0] == BT_SUBDOC:
+                    mt = find_field(buf, mp[1], "ModuleTag")
+                    if mt and mt[0] == BT_SUBDOC:
+                        tn = find_field(buf, mt[1], "TagName")
+                        if (tn and tn[0] == BT_STRING
+                                and read_string(buf, tn[1]) == EQUIPMENT_TAG):
+                            found["equipment_doc_start"] = vpos
+                            found["module_params_start"] = mp[1]
+                            found["ancestor_chain"] = list(chain) + [doc_start, vpos]
+                            return True
+            if descend(vpos, chain + [doc_start]):
+                return True
+        return False
+
+    if not descend(0, []):
+        raise RuntimeError(
+            "Could not find the Equipment module in this character's data."
+        )
+
+    e_start = found["equipment_doc_start"]
+    mp_start = found["module_params_start"]
+
+    bp_slots = find_field(buf, mp_start, "Slots")
+    if not bp_slots or bp_slots[0] != BT_ARRAY:
+        raise RuntimeError("Blueprint Slots array not found in ModuleParams.")
+    bp_hands_pos = None
+    for t, name, vpos, vend in iter_elements(buf, bp_slots[1]):
+        if t != BT_SUBDOC:
+            continue
+        sp = find_field(buf, vpos, "SlotParams")
+        cs = find_field(buf, vpos, "CountSlots")
+        if not sp or sp[0] != BT_STRING or not cs or cs[0] != BT_INT32:
+            continue
+        if read_string(buf, sp[1]) == HANDS_PATH:
+            bp_hands_pos = cs[1]
+    if bp_hands_pos is None:
+        raise RuntimeError("Blueprint Hands entry not found.")
+    found["bp_hands_count_pos"] = bp_hands_pos
+
+    live = find_field(buf, e_start, "Slots")
+    if not live or live[0] != BT_ARRAY:
+        raise RuntimeError("Live Slots array not found inside Equipment module.")
+    found["live_array_start"] = live[1]
+    found["live_array_end"] = live[2]
+
+    live_slots: list[dict] = []
+    for t, name, vpos, vend in iter_elements(buf, live[1]):
+        if t != BT_SUBDOC:
+            continue
+        elem_start = vpos - len(name) - 2
+        sp = find_field(buf, vpos, "SlotParams")
+        kind = None
+        if sp and sp[0] == BT_STRING:
+            kind = _classify_equipment_slot_path(read_string(buf, sp[1]))
+        live_slots.append({
+            "kind": kind,
+            "has_item": _slot_has_item(buf, vpos),
+            "elem_start": elem_start,
+            "elem_end": vend,
+            "index_name": bytes(name),
+        })
+    found["live_slots"] = live_slots
+    return found
+
+
 # ---------------------------------------------------------------------------
 # Build the new live `Slots` array
 # ---------------------------------------------------------------------------
@@ -568,18 +661,65 @@ def _build_live_array(buf: bytes, info: dict, new_ring: int, new_neck: int,
     return (arr_size).to_bytes(4, "little", signed=False) + bytes(body), []
 
 
-# ---------------------------------------------------------------------------
-# Top-level patch
-# ---------------------------------------------------------------------------
+def _build_equipment_live_array(buf: bytes, info: dict, new_hands: int,
+                                *, force_delete_equipped: bool = False):
+    """Return (new_array_bytes, blocking_items) for the Equipment module."""
+    slots = info["live_slots"]
+    heads = [s for s in slots if s["kind"] == "head"]
+    torsos = [s for s in slots if s["kind"] == "torso"]
+    legs = [s for s in slots if s["kind"] == "legs"]
+    hands = [s for s in slots if s["kind"] == "hands"]
+    boots = [s for s in slots if s["kind"] == "boots"]
+    known = {"head", "torso", "legs", "hands", "boots"}
+    others = [s for s in slots if s["kind"] not in known]
+
+    if not hands:
+        raise RuntimeError(
+            "This character has no existing Hands live slot to use as a template."
+        )
+
+    blocking: list[tuple[str, dict]] = []
+    if new_hands < len(hands):
+        for s in hands[new_hands:]:
+            if s["has_item"]:
+                blocking.append(("Hands", s))
+    if blocking and not force_delete_equipped:
+        return None, blocking
+
+    hands_template = _empty_template_for_kind(buf, hands)
+
+    sources: list[bytes] = []
+    sources.extend(bytes(buf[s["elem_start"]:s["elem_end"]]) for s in heads)
+    sources.extend(bytes(buf[s["elem_start"]:s["elem_end"]]) for s in torsos)
+    sources.extend(bytes(buf[s["elem_start"]:s["elem_end"]]) for s in legs)
+    sources.extend(bytes(buf[s["elem_start"]:s["elem_end"]]) for s in hands[:new_hands])
+    sources.extend([hands_template] * max(0, new_hands - len(hands)))
+    sources.extend(bytes(buf[s["elem_start"]:s["elem_end"]]) for s in boots)
+    sources.extend(bytes(buf[s["elem_start"]:s["elem_end"]]) for s in others)
+
+    body = bytearray()
+    for i, src in enumerate(sources):
+        body += _retag_slot_element(src, str(i), i)
+    body.append(0)
+
+    arr_size = 4 + len(body)
+    return (arr_size).to_bytes(4, "little", signed=False) + bytes(body), []
 
 
-def patch_player_value(value: bytes, new_ring: int, new_neck: int,
-                       *, force_delete_equipped: bool = False) -> bytes:
-    """Return new bytes for the character record with Ring/Necklace counts
-    set to `new_ring`/`new_neck`.  Raises RuntimeError if the requested
-    shrink would discard an equipped item (unless force_delete_equipped)."""
+def _splice_live_slots_array(out: bytearray, info: dict, new_array: bytes) -> None:
+    old_start = info["live_array_start"]
+    old_end = info["live_array_end"]
+    delta = len(new_array) - (old_end - old_start)
+    out[:] = out[:old_start] + bytearray(new_array) + out[old_end:]
+    if delta != 0:
+        for doc_start in info["ancestor_chain"]:
+            sz = _u32(out, doc_start)
+            out[doc_start:doc_start + 4] = (sz + delta).to_bytes(4, "little", signed=False)
+
+
+def _patch_jewelry_slots(value: bytes, new_ring: int, new_neck: int,
+                         *, force_delete_equipped: bool = False) -> bytes:
     info = locate_jewelry(value)
-
     new_array, blocking = _build_live_array(
         value, info, new_ring, new_neck,
         force_delete_equipped=force_delete_equipped,
@@ -588,31 +728,60 @@ def patch_player_value(value: bytes, new_ring: int, new_neck: int,
         raise RuntimeError(_format_blocking_slots_message(blocking))
 
     out = bytearray(value)
-    # Step 1: blueprint CountSlots updates (no size change, do these first).
     out[info["bp_ring_count_pos"]:info["bp_ring_count_pos"] + 4] = \
         int(new_ring).to_bytes(4, "little", signed=True)
     out[info["bp_neck_count_pos"]:info["bp_neck_count_pos"] + 4] = \
         int(new_neck).to_bytes(4, "little", signed=True)
+    _splice_live_slots_array(out, info, new_array)
+    return bytes(out)
 
-    # Step 2: splice the live array.
-    old_start = info["live_array_start"]
-    old_end = info["live_array_end"]
-    delta = len(new_array) - (old_end - old_start)
-    out = out[:old_start] + bytearray(new_array) + out[old_end:]
 
-    # Step 3: propagate the size delta up every ancestor sub-doc / array.
-    if delta != 0:
-        for doc_start in info["ancestor_chain"]:
-            sz = _u32(out, doc_start)
-            out[doc_start:doc_start + 4] = (sz + delta).to_bytes(4, "little", signed=False)
+def _patch_equipment_hands(value: bytes, new_hands: int,
+                           *, force_delete_equipped: bool = False) -> bytes:
+    info = locate_equipment(value)
+    new_array, blocking = _build_equipment_live_array(
+        value, info, new_hands,
+        force_delete_equipped=force_delete_equipped,
+    )
+    if blocking:
+        raise RuntimeError(_format_blocking_slots_message(blocking))
 
-    # Sanity: root size must now equal total length.
+    out = bytearray(value)
+    out[info["bp_hands_count_pos"]:info["bp_hands_count_pos"] + 4] = \
+        int(new_hands).to_bytes(4, "little", signed=True)
+    _splice_live_slots_array(out, info, new_array)
+    return bytes(out)
+
+
+# ---------------------------------------------------------------------------
+# Top-level patch
+# ---------------------------------------------------------------------------
+
+
+def patch_player_value(value: bytes, new_ring: int, new_neck: int, new_hands: int,
+                       *, force_delete_equipped: bool = False,
+                       patch_jewelry: bool = True,
+                       patch_hands: bool = True) -> bytes:
+    """Return new bytes for the character record with Ring/Necklace/Hands counts
+    updated.  Raises RuntimeError if a requested shrink would discard an
+    equipped item (unless force_delete_equipped)."""
+    out = value
+    if patch_jewelry:
+        out = _patch_jewelry_slots(
+            out, new_ring, new_neck,
+            force_delete_equipped=force_delete_equipped,
+        )
+    if patch_hands:
+        out = _patch_equipment_hands(
+            out, new_hands,
+            force_delete_equipped=force_delete_equipped,
+        )
     if _u32(out, 0) != len(out):
         raise RuntimeError(
             f"Internal error: root document size {_u32(out, 0)} != "
             f"buffer length {len(out)} after splice."
         )
-    return bytes(out)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -851,17 +1020,18 @@ def find_jewelry_character(cf) -> tuple[object, bytes, str] | None:
     return None
 
 
-def prompt_count(label: str, current: int) -> int:
+def prompt_count(label: str, current: int, *, min_val: int = SLOT_MIN,
+                 max_val: int = SLOT_MAX) -> int:
     while True:
         raw = input(
-            f"  {label} — current {current}, new value [{SLOT_MIN}-{SLOT_MAX}] "
+            f"  {label} — current {current}, new value [{min_val}-{max_val}] "
             f"(Enter to keep): "
         ).strip()
         if raw == "":
             return current
-        if raw.isdigit() and SLOT_MIN <= int(raw) <= SLOT_MAX:
+        if raw.isdigit() and min_val <= int(raw) <= max_val:
             return int(raw)
-        print(f"    Must be a number between {SLOT_MIN} and {SLOT_MAX}.")
+        print(f"    Must be a number between {min_val} and {max_val}.")
 
 
 def save_pre_patch_backup(db_dir: Path, value: bytes) -> Path | None:
@@ -901,16 +1071,19 @@ def main() -> None:
     print(f"  Character: {target_name}")
 
     try:
-        info = locate_jewelry(target_value)
+        j_info = locate_jewelry(target_value)
+        e_info = locate_equipment(target_value)
     except Exception as e:
-        print(f"\nERROR: cannot parse jewelry data: {e}")
+        print(f"\nERROR: cannot parse character inventory data: {e}")
         db.close()
         return
 
-    live_rings = sum(1 for s in info["live_slots"] if s["kind"] == "ring")
-    live_necks = sum(1 for s in info["live_slots"] if s["kind"] == "neck")
-    bp_rings = read_int32(target_value, info["bp_ring_count_pos"])
-    bp_necks = read_int32(target_value, info["bp_neck_count_pos"])
+    live_rings = sum(1 for s in j_info["live_slots"] if s["kind"] == "ring")
+    live_necks = sum(1 for s in j_info["live_slots"] if s["kind"] == "neck")
+    bp_rings = read_int32(target_value, j_info["bp_ring_count_pos"])
+    bp_necks = read_int32(target_value, j_info["bp_neck_count_pos"])
+    live_hands = sum(1 for s in e_info["live_slots"] if s["kind"] == "hands")
+    bp_hands = read_int32(target_value, e_info["bp_hands_count_pos"])
 
     _clear_screen()
     print("  Windrose — More Ring and Necklace Slots")
@@ -920,7 +1093,9 @@ def main() -> None:
     print("  Current slots:")
     print(f"    Ring     — {live_rings}  (blueprint {bp_rings})")
     print(f"    Necklace — {live_necks}  (blueprint {bp_necks})")
-    if live_rings != bp_rings or live_necks != bp_necks:
+    print(f"    Hands    — {live_hands}  (blueprint {bp_hands})")
+    if (live_rings != bp_rings or live_necks != bp_necks
+            or live_hands != bp_hands):
         print("    (blueprint differs from live — game may reset on next save)")
     print()
     print("  Enter counts that match the mod variant you installed on Nexus")
@@ -928,19 +1103,42 @@ def main() -> None:
 
     new_rings = prompt_count("Ring slots", max(live_rings, bp_rings))
     new_necks = prompt_count("Necklace slots", max(live_necks, bp_necks))
+    new_hands = prompt_count(
+        "Hands slots", max(live_hands, bp_hands),
+        min_val=HANDS_SLOT_MIN, max_val=HANDS_SLOT_MAX,
+    )
 
-    if (new_rings == live_rings and new_necks == live_necks
-            and new_rings == bp_rings and new_necks == bp_necks):
+    jewelry_unchanged = (
+        new_rings == live_rings and new_necks == live_necks
+        and new_rings == bp_rings and new_necks == bp_necks
+    )
+    hands_unchanged = (
+        new_hands == live_hands and new_hands == bp_hands
+    )
+    if jewelry_unchanged and hands_unchanged:
         print("\nNothing to do — values already match.")
         db.close()
         return
 
-    shrinking = new_rings < live_rings or new_necks < live_necks
+    shrinking = (
+        new_rings < live_rings or new_necks < live_necks
+        or new_hands < live_hands
+    )
     force_delete = False
     if shrinking:
-        _, blocking = _build_live_array(
-            target_value, info, new_rings, new_necks,
-        )
+        blocking: list[tuple[str, dict]] = []
+        if not jewelry_unchanged and (new_rings < live_rings or new_necks < live_necks):
+            _, j_blocking = _build_live_array(
+                target_value, j_info, new_rings, new_necks,
+            )
+            if j_blocking:
+                blocking.extend(j_blocking)
+        if not hands_unchanged and new_hands < live_hands:
+            _, e_blocking = _build_equipment_live_array(
+                target_value, e_info, new_hands,
+            )
+            if e_blocking:
+                blocking.extend(e_blocking)
         if blocking:
             print(f"\n{_format_blocking_slots_message(blocking)}")
             print(
@@ -955,8 +1153,10 @@ def main() -> None:
 
     try:
         new_value = patch_player_value(
-            target_value, new_rings, new_necks,
+            target_value, new_rings, new_necks, new_hands,
             force_delete_equipped=force_delete,
+            patch_jewelry=not jewelry_unchanged,
+            patch_hands=not hands_unchanged,
         )
     except Exception as e:
         print(f"\nERROR: {e}")

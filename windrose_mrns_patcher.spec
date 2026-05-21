@@ -31,7 +31,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name=f'windrose_mrns_patcher_v{__version__}',
+    name=f'windrose_mrns_+g_patcher_v{__version__}',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

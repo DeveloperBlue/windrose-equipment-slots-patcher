@@ -3,4 +3,5 @@ mod/
 build/
 dist/
 dev/
+!/DA_PlayerInventoryParams.json
 __pycache__/
