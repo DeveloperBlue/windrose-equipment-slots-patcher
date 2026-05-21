@@ -1,4 +1,4 @@
-# Windrose - More Ring and Necklace Slots - Existing Character Patcher
+# Windrose - More Ring and Necklace Slots - Existing Character Patcher - v0.9 - Unreleased POC
 
 A small Windows tool that retro-fits the **More Ring and Necklace Slots** mod
 onto an EXISTING Windrose character. The mod only adds the extra slots when a
