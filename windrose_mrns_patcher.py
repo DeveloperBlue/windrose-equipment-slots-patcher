@@ -435,6 +435,73 @@ def _retag_slot_element(template_bytes: bytes, new_index_name: str,
     return bytes(out)
 
 
+def _zeroed_value(buf: bytes, t: int, vpos: int) -> bytes:
+    """Bytes for an empty/zero BSON value of type `t`."""
+    if t == BT_DOUBLE: return b"\x00" * 8
+    if t == BT_STRING: return (1).to_bytes(4, "little", signed=False) + b"\x00"
+    if t in (BT_SUBDOC, BT_ARRAY): return _zeroed_doc(buf, vpos)
+    if t == BT_BINARY: return (0).to_bytes(4, "little", signed=False) + b"\x00"
+    if t == BT_BOOL:   return b"\x00"
+    if t == BT_NULL:   return b""
+    if t == BT_INT32:  return b"\x00" * 4
+    if t == BT_INT64:  return b"\x00" * 8
+    raise ValueError(f"BSON: unsupported type 0x{t:02x} when zeroing")
+
+
+def _zeroed_doc(buf: bytes, doc_start: int) -> bytes:
+    """Return a fresh BSON sub-document (or array) with the same field names
+    and types as the one at `doc_start`, but every value zeroed/emptied.
+    Used to synthesize an empty `ItemsStack` from a filled one."""
+    body = bytearray()
+    for t, name, vpos, _vend in iter_elements(buf, doc_start):
+        body.append(t)
+        body += name
+        body.append(0)
+        body += _zeroed_value(buf, t, vpos)
+    body.append(0)
+    total = 4 + len(body)
+    return total.to_bytes(4, "little", signed=False) + bytes(body)
+
+
+def _emptied_slot_element(buf: bytes, slot: dict) -> bytes:
+    """Copy a live slot element but replace its `ItemsStack` sub-doc with a
+    zeroed version (same structure, all values empty/zero).  Preserves the
+    slot's identity fields — SlotId, SlotParams, etc. — so the game still
+    sees it as a Ring/Necklace slot, just with no item equipped."""
+    elem_start = slot["elem_start"]
+    elem_end = slot["elem_end"]
+    elem = bytes(buf[elem_start:elem_end])
+    if elem[0] != BT_SUBDOC:
+        raise RuntimeError("Slot element did not start with BT_SUBDOC.")
+    name_end = elem.index(b"\x00", 1)
+    subdoc_start = name_end + 1
+
+    body = bytearray()
+    for t, name, vpos, vend in iter_elements(elem, subdoc_start):
+        body.append(t)
+        body += name
+        body.append(0)
+        if name == b"ItemsStack" and t == BT_SUBDOC:
+            body += _zeroed_doc(elem, vpos)
+        else:
+            body += elem[vpos:vend]
+    body.append(0)
+    new_subdoc_size = 4 + len(body)
+    new_subdoc = new_subdoc_size.to_bytes(4, "little", signed=False) + bytes(body)
+    return elem[:subdoc_start] + new_subdoc
+
+
+def _empty_template_for_kind(buf: bytes, slots_of_kind: list[dict]) -> bytes:
+    """Return raw bytes of an empty slot element to clone when growing the
+    live array.  Prefers an existing empty slot of the same kind so we
+    inherit whatever exact byte layout the game writes; only synthesizes a
+    cleared copy when every existing slot of that kind holds an item."""
+    for s in slots_of_kind:
+        if not s["has_item"]:
+            return bytes(buf[s["elem_start"]:s["elem_end"]])
+    return _emptied_slot_element(buf, slots_of_kind[0])
+
+
 def _format_blocking_slots_message(blocking: list[tuple[str, dict]]) -> str:
     lines = [
         f"  - {kind} slot (live index {s['index_name'].decode('ascii', errors='replace')}) "
@@ -477,8 +544,10 @@ def _build_live_array(buf: bytes, info: dict, new_ring: int, new_neck: int,
     if blocking and not force_delete_equipped:
         return None, blocking
 
-    ring_template = bytes(buf[rings[0]["elem_start"]:rings[0]["elem_end"]])
-    neck_template = bytes(buf[necks[0]["elem_start"]:necks[0]["elem_end"]])
+    # The template MUST be an empty slot — cloning a filled slot would
+    # duplicate the equipped item into every new slot we add.
+    ring_template = _empty_template_for_kind(buf, rings)
+    neck_template = _empty_template_for_kind(buf, necks)
 
     # Keep existing slots in order, then append empty clones up to the target
     # count.  Final order: rings, necklaces, backpack, anything else.
