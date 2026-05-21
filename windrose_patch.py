@@ -2,6 +2,13 @@
 Windrose - More Ring and Necklace Slots - Existing Character Patcher
 ====================================================================
 
+Patches EXISTING Windrose character saves so they work with Baradrim's
+"More Ring and Necklace Slots" mod.  This is not a replacement for that mod;
+the mod should remain installed for the extra slots to function in-game.
+
+* Game mod:  https://www.nexusmods.com/windrose/mods/350
+* Patcher:   https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher
+
 The save profile is a RocksDB database keyed under the `R5BLPlayer` column
 family.  Each character's value is a BSON document tree.  The Jewelry module
 inside that tree has two parallel views that the game cross-checks on load:
@@ -37,6 +44,7 @@ Usage:
 from __future__ import annotations
 
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -69,6 +77,101 @@ BACK_PATH = "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Backpac
 SLOT_MIN = 1
 SLOT_MAX = 10
 FORCE_DELETE_CONFIRM = "DELETE"
+
+MOD_URL = "https://www.nexusmods.com/windrose/mods/350"
+PATCHER_URL = (
+    "https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher"
+)
+
+_ANSI_RE = re.compile(r"\033\[[0-9;]*m")
+_RESET = "\033[0m"
+_BOLD = "\033[1m"
+_DIM = "\033[2m"
+_CYAN = "\033[96m"
+_YELLOW = "\033[93m"
+_MAGENTA = "\033[95m"
+_UNDERLINE = "\033[4m"
+
+_COLOR_ENABLED = False
+
+
+def _init_console_color() -> bool:
+    """Enable ANSI colors when stdout is an interactive terminal."""
+    global _COLOR_ENABLED
+    if _COLOR_ENABLED or os.environ.get("NO_COLOR"):
+        return _COLOR_ENABLED
+    if not sys.stdout.isatty():
+        return False
+    if sys.platform == "win32":
+        try:
+            import ctypes
+
+            kernel32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+            handle = kernel32.GetStdHandle(-11)
+            mode = ctypes.c_uint32()
+            if kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
+                kernel32.SetConsoleMode(handle, mode.value | 0x0004)
+        except Exception:
+            pass
+    _COLOR_ENABLED = True
+    return True
+
+
+def _c(text: str, *codes: str) -> str:
+    if not _COLOR_ENABLED:
+        return text
+    return "".join(codes) + text + _RESET
+
+
+def _visible_len(text: str) -> int:
+    return len(_ANSI_RE.sub("", text))
+
+
+def _print_banner() -> None:
+    """Startup credits, links, and scope disclaimer."""
+    _init_console_color()
+    w = 86
+    border = "+" + "-" * w + "+"
+
+    def row(text: str = "") -> None:
+        pad = max(0, (w - 1) - _visible_len(text))
+        print(f"| {text}{' ' * pad}|")
+
+    def bar() -> None:
+        print(_c(border, _DIM))
+
+    title = "  Windrose - More Ring and Necklace Slots"
+    subtitle = "  Existing Character Patcher"
+    mod_line = (
+        f"  {_c('Mod (Baradrim):', _BOLD, _YELLOW)}  "
+        f"{_c(MOD_URL, _UNDERLINE, _CYAN)}"
+    )
+    patcher_line = (
+        f"  {_c('Patcher:', _BOLD, _MAGENTA)} "
+        f"{_c(PATCHER_URL, _UNDERLINE, _CYAN)}"
+    )
+    note1 = (
+        "  Retro-fits "
+        f"{_c('EXISTING', _BOLD, _YELLOW)}"
+        " saves for the mod above; not a replacement."
+    )
+    note2 = (
+        f"  {_c('Keep the Nexus mod installed', _YELLOW)}"
+        " for extra slots to work in-game."
+    )
+
+    print()
+    bar()
+    row(_c(title, _BOLD, _CYAN))
+    row(_c(subtitle, _CYAN))
+    bar()
+    row(mod_line)
+    row(patcher_line)
+    bar()
+    row(note1)
+    row(note2)
+    bar()
+    print()
 
 
 def _clear_screen() -> None:
@@ -700,8 +803,7 @@ def save_pre_patch_backup(db_dir: Path, value: bytes) -> Path | None:
 
 
 def main() -> None:
-    print("  Windrose — More Ring and Necklace Slots")
-    print()
+    _print_banner()
 
     folder = resolve_character_folder(sys.argv)
     if folder is None:
@@ -722,6 +824,7 @@ def main() -> None:
         db.close()
         return
     target_key, target_value, target_name = found
+    print(f"  Character: {target_name}")
 
     try:
         info = locate_jewelry(target_value)
@@ -784,7 +887,12 @@ def main() -> None:
         db.close()
         return
 
-    save_pre_patch_backup(db_dir, target_value)
+    bak = save_pre_patch_backup(db_dir, target_value)
+    if bak is not None:
+        print(f"  Saved pre-patch backup: {bak.name}")
+
+    print(f"  Writing patched value ({len(new_value)} bytes, "
+          f"delta {len(new_value) - len(target_value):+d})...")
     cf[target_key] = new_value
     db.flush()
     try:
