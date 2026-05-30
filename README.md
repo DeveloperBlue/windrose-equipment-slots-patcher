@@ -1,8 +1,28 @@
-# Windrose - More Ring and Necklace Slots - Existing Character Patcher - v1.0
+# Windrose Equipment Slots Patcher - v2.0
 
-**This is not a mod. This is a tool for patching your existing Windrose characters to work with the existing Nexus mod [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350) mod by Baradrim, so you don't need to make a new character to use the mod.**
+By **Michael Rooplall / DeveloperBlue** — [GitHub repository](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher) · [Nexus profile](https://www.nexusmods.com/profile/DeveloperBlue)
 
-If you are creating a new character with the mod installed, you do not need this patcher.
+This tool updates your **existing** Windrose character saves so you can use more equipment slots—extra ring and necklace slots, a second glove slot, and more bullet and gunpowder slots—without starting a new character. Pick your character, set how many slots you want, and the patcher writes the change directly into your save (with an automatic backup first).
+
+**You do not need any other mods installed** to run this patcher. It works on its own. Close Windrose completely before you run it, and follow the on-screen steps (including the Steam Cloud Sync reminder after a successful patch).
+
+These Nexus mods may link to or bundle this patcher:
+
+- [Expanded Jewelry - More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/___)
+- [Two Glove Slots](https://www.nexusmods.com/windrose/mods/___)
+- [More Bullets and Gunpowder Slots](https://www.nexusmods.com/windrose/mods/___)
+
+## Slots managed
+
+The patcher can change the following slot types for an existing character:
+
+| Slot       | Range  | Vanilla |
+| ---------- | ------ | ------- |
+| Rings      | 1–10   | 1       |
+| Necklaces  | 1–10   | 1       |
+| Gloves     | 1–2    | 1       |
+| Bullets    | 1–6    | 1       |
+| Gunpowder  | 1–6    | 1       |
 
 ## Preview
 
@@ -20,13 +40,6 @@ If you are creating a new character with the mod installed, you do not need this
   </tr>
 </table>
 
-> [!NOTE]
-> Ensure you have [More Ring and Necklace Slots mod](https://www.nexusmods.com/windrose/mods/350) by Baradrim installed. You can double check that it is working by creating a new character, and checking in the tutorial to see if you have the extra slots.
-
-> [!CAUTION]
-> It is **HIGHLY RECOMMENDED** that you **create a backup of your save folder**. Scroll down to see how. 
->
-> Windrose is constantly updating; mods and tooling usually lag behind. Ensure you are taking the best steps to protect your saves.
 
 ## How to Use
 > [!IMPORTANT]
@@ -36,8 +49,6 @@ If you are creating a new character with the mod installed, you do not need this
 >
 > If Steam asks about a conflict, pick "Use Local files".
 
-> [!NOTE]
-> When the patcher asks for ring and necklace slot counts, enter values that **match the mod variant you installed** from Nexus (for example: 2 ring + 2 necklace, 4 ring + 4 necklace, or another combination offered by the mod).
 
 ### Running the patcher
 
@@ -47,10 +58,6 @@ If you are creating a new character with the mod installed, you do not need this
 3. Run the patcher and follow the instructions
 4. Launch the game and verify that you have the extra slots
 5. Close the game and re-enable Steam Cloud Sync
-
-I apologize if Chrome, Windows Defender, or your antivirus flags the file. This is just the nature of all unsigned *.exe files. If this is not an acceptable risk, consider building from source yourself.
-
-[🛡️ View VirusTotal Scan Report](https://www.virustotal.com/gui/file-analysis/N2JiYTI0ODRjMzgwYWE3ZWUxNWMzOTA4NDZhNjhlMTg6MTc3OTM1MzA1Ng==)
 
 ----
 
@@ -77,33 +84,55 @@ cd windrose-mrns-existing-character-patcher
 pip install pyinstaller rocksdict
 
 # Build
-pyinstaller windrose_mrns_patcher.spec
+pyinstaller windrose_equipment_slots_patcher.spec
 ```
 
-The compiled `windrose_mrns_patcher.exe` can be found in the `dist\` folder.
+The compiled `windrose_equipment_slots_patcher_v<version>.exe` can be found in the `dist\` folder.
 
 ----
 # FAQs
 
 ## How to backup my saves?
-Your saves can be found at  `%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\`
 
-Create a copy of ``RocksDB_v2`` and ``RocksDB_v2_Backups`` folders and store them somewhere (e.g. your Documents folder). Do not leave the copy in the same folder as the source as the Steam Cloud sync could pick them up and delete them.
+This tool automatically creates a backup before every patch and before every backup restore. If you want to manually backup your saves yourself, you can find them at `%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\`
+
+Backups for this tool live at `%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Backups`.
+
+<a id="steam-cloud-sync"></a>
 
 ## How do I disable Steam Cloud Saves?
-In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"
+In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"*
 
 Note that after applying the patch, **launching the game**, and verifying that you see your slots, you should **re-enable Steam Cloud Saves**.
 
+## My slots don't fit on screen
+Depending on your monitor resolution, game resolution, and number of modified slots, some of your game UI may not fit on screen. Consider using this mod to tweak the UI scale:
+[UI Scale - HUD Scale by DaraTeaGod](https://www.nexusmods.com/windrose/mods/124)
+
+## How can I add more slots than the limit?
+Run the exe with the ``--nocap`` flag. This removes the upper limits so you can set any value. **Use with care.**
+
+```bash
+./windrose_equipment_slots_patcher_v<version> --nocap
+```
+
 ## How do I report a bug
-If you have discovered any bugs, feel free to leave an issue here on [GitHiub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues) or send an email over to ``contact@michaelrooplall.com``.
+If you have discovered any bugs, feel free to leave an issue here on [GitHub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues), leave a comment on the nexus mod, or send an email over to ``contact@michaelrooplall.com``.
 
 ## Undoing the patch
 
 If you want to "undo" the patcher and remove the extra slots:
-- Follow the "How to Use" section again, and specify "1" for the number of ring and necklace slots.
-- Also remove the nexus mod if you don't want it to apply to future characters.
+- Re-run the patcher, select your character, and choose **Reset Slots to Vanilla** (or **Restore Backup** to roll back to an earlier snapshot).
+
+> [!NOTE]
+> You cannot reduce a slot count below a slot that still holds an item. Unequip / empty those slots in-game first, or confirm the destructive removal when prompted.
+
+## Why isn't this just an installable mod?
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of trials, I was not able to successfully inject the slots via UE4SS. If in the future anyone is able to accomplish this, I would love to know. For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
 
 ----
-# Special Thanks
-Special thanks to [agreenbeen/windrose-save-tool](https://github.com/agreenbeen/windrose-save-tool/tree/main) for the detailed information on how Windrose requires uncompressed saves for RocksDB-- solved a lot of headaches. 
+# Credits
+
+- **[More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350)** — inspiration for expanding ring and necklace equipment slots in Windrose.
+- **`checkpoint_zip.py`** — Adapted from [agreenbeen/windrose-save-tool](https://github.com/agreenbeen/windrose-save-tool/tree/main) (rebuilds the game's `RocksDB_v2_Backups` checkpoint ZIP after patching so changes persist on load).
+- **RocksDB save format** — Thanks to the same project for documenting that Windrose requires uncompressed saves in RocksDB; that cleared up a lot of headaches during development. 

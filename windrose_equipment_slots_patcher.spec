@@ -11,7 +11,7 @@ _version_spec.loader.exec_module(_version_mod)
 __version__ = _version_mod.__version__
 
 a = Analysis(
-    ['windrose_mrns_patcher.py'],
+    ['windrose_equipment_slots_patcher.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -31,7 +31,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name=f'windrose_mrns_+g_patcher_v{__version__}',
+    name=f'windrose_equipment_slots_patcher_v{__version__}',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
