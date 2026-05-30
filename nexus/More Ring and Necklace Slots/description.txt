@@ -1,0 +1,144 @@
+[center][size=5][color=#D4AF37][b]More Ring and Necklace Slots[/b][/color][/size]
+[size=2][i]Expand jewelry equipment slots on your existing Windrose characters[/i][/size][/center]
+
+[line]
+
+[color=#D4AF37][size=4][b]Description[/b][/size][/color]
+
+Equip more rings and necklaces at the same time on your existing Windrose characters.
+
+Vanilla Windrose gives you [b]one ring slot[/b] and [b]one necklace slot[/b]. This mod raises those limits so you can wear more jewelry at once — up to [color=#D4AF37][b]10 ring slots[/b][/color] and [color=#D4AF37][b]10 necklace slots[/b][/color].
+
+The download includes the [b]Windrose Equipment Slots Patcher[/b], which updates your current save directly. Pick your character, choose how many ring and necklace slots you want, and the patcher applies the change with an [b]automatic backup[/b] first.
+
+[quote][color=#E74C3C][b]Important — Steam Cloud Sync[/b][/color]
+You must [b]temporarily disable Steam Cloud Sync[/b] for Windrose before relaunching the game after patching. Otherwise Steam can pull your old save from the cloud and overwrite the patched save.
+
+In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i].
+
+After you launch the game and confirm the extra slots appear, [b]close Windrose[/b] and re-enable Steam Cloud Sync.[/quote]
+
+[line]
+
+[color=#D4AF37][size=4][b]Usage Instructions[/b][/size][/color]
+
+[list=1]
+[*][b]Close Windrose completely[/b] before running the patcher.
+[*]Download and extract this mod from the [b]Files[/b] tab.
+[*][b]Temporarily disable Steam Cloud Sync[/b] for Windrose (see the warning above):
+[list]
+[*]In Steam, right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b]
+[*]Uncheck [b]Keep game saves in the Steam Cloud[/b]
+[/list]
+[*]Run [code]windrose_equipment_slots_patcher_v*.exe[/code] from the download.
+[*]Select the character you want to update and follow the on-screen instructions.
+[*]Confirm the patch. The tool saves a backup before making any changes.
+[*]Launch Windrose and verify the extra jewelry slots appear on that character.
+[*]After confirming the patch worked, [b]close the game[/b] and re-enable Steam Cloud Sync in Steam properties.
+[/list]
+
+[color=#888888][i]To undo a patch, run the patcher again and choose [b]Reset Slots to Vanilla[/b] or [b]Restore Backup[/b]. If you want fewer slots than you currently have, unequip items from the slots you are removing first.[/i][/color]
+
+[line]
+
+[color=#D4AF37][size=4][b]Main Features[/b][/size][/color]
+
+[list]
+[*][b]More ring and necklace slots[/b] — expand from 1/1 (vanilla) up to 10 rings and 10 necklaces per character
+[*][b]Works on existing characters[/b] — no need to reroll or lose progress
+[*][b]Automatic backups[/b] — every patch and restore creates a snapshot you can roll back to
+[*][b]Simple guided patcher[/b] — select a character, enter slot counts, confirm
+[*][b]Reset to vanilla[/b] — built-in option to remove extra slots when you want the default layout back
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Requirements[/b][/size][/color]
+
+[list]
+[*]Windrose must be [b]fully closed[/b] while the patcher runs
+[*][b]Steam Cloud Sync must be disabled[/b] before you launch the game after patching (see usage steps above)
+[*]No other mods are required — this download includes everything you need for ring and necklace slots
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Optional Mods[/b][/size][/color]
+
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/124][b]UI Scale - HUD Scale[/b][/url] by DaraTeaGod — recommended if extra slots push jewelry off-screen at your resolution (the 80% scale works well with 4 ring / 4 necklace layouts).
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Other Mods[/b][/size][/color]
+
+[color=#888888][i]These companion mods use the same [b]Windrose Equipment Slots Patcher[/b] to adjust other slot types:[/i][/color]
+
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/___][b]Two Glove Slots[/b][/url] — add a second glove slot
+[*][url=https://www.nexusmods.com/windrose/mods/___][b]More Bullets and Gunpowder Slots[/b][/url] — expand ammo and gunpowder slots
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Frequently Asked Questions[/b][/size][/color]
+
+[spoiler=How do I backup my saves?]
+This tool automatically creates a backup before every patch and before every backup restore.
+
+If you want to manually backup your saves yourself, you can find them at:
+[code]%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\[/code]
+
+Backups for this tool live at:
+[code]%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Backups[/code]
+[/spoiler]
+
+[spoiler=How do I disable Steam Cloud Saves?]
+In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i]
+
+After applying the patch, [b]launching the game[/b], and verifying that you see your slots, you should [b]re-enable Steam Cloud Saves[/b].
+[/spoiler]
+
+[spoiler=My slots don't fit on screen]
+Depending on your monitor resolution, game resolution, and number of modified slots, some of your game UI may not fit on screen.
+
+Consider using this mod to tweak the UI scale:
+[url=https://www.nexusmods.com/windrose/mods/124][b]UI Scale - HUD Scale[/b][/url] by DaraTeaGod
+[/spoiler]
+
+[spoiler=How can I add more slots than the limit?]
+Run the exe with the [code]--nocap[/code] flag. This removes the upper limits so you can set any value. [color=#E74C3C][b]Use with care.[/b][/color]
+
+[code]windrose_equipment_slots_patcher_v<version>.exe --nocap[/code]
+[/spoiler]
+
+[spoiler=How do I report a bug?]
+If you have discovered any bugs, feel free to:
+[list]
+[*]Leave a comment on this Nexus mod page
+[*]Open an issue on [url=https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues][b]GitHub[/b][/url]
+[*]Send an email to [code]contact@michaelrooplall.com[/code]
+[/list]
+[/spoiler]
+
+[spoiler=How do I undo the patch?]
+Re-run the patcher, select your character, and choose [b]Reset Slots to Vanilla[/b] (or [b]Restore Backup[/b] to roll back to an earlier snapshot).
+
+You cannot reduce a slot count below a slot that still holds an item. Unequip / empty those slots in-game first, or confirm the destructive removal when prompted.
+[/spoiler]
+
+[spoiler=Why isn't this just an installable mod?]
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of trials, I was not able to successfully inject the slots via UE4SS. If in the future anyone is able to accomplish this, I would love to know.
+
+For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
+[/spoiler]
+
+[line]
+
+[color=#D4AF37][size=4][b]Credits[/b][/size][/color]
+
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/350][b]More Ring and Necklace Slots[/b][/url] — inspiration for expanding ring and necklace equipment slots in Windrose. Only worked for new characters.
+[*][url=https://github.com/agreenbeen/windrose-save-tool][b]agreenbeen/windrose-save-tool[/b][/url] — [code]checkpoint_zip.py[/code] adapted from this project; its RocksDB save-format notes were essential for getting patches to persist on load.
+[/list]
