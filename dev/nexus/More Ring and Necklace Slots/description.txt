@@ -77,7 +77,6 @@ After you launch the game and confirm the extra slots appear, [b]close Windrose[
 
 [list]
 [*][url=https://www.nexusmods.com/windrose/mods/___][b]Two Glove Slots[/b][/url] — add a second glove slot
-[*][url=https://www.nexusmods.com/windrose/mods/___][b]More Bullets and Gunpowder Slots[/b][/url] — expand ammo and gunpowder slots
 [/list]
 
 [line]

@@ -2,7 +2,7 @@
 
 By **Michael Rooplall / DeveloperBlue** — [GitHub repository](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher) · [Nexus profile](https://www.nexusmods.com/profile/DeveloperBlue)
 
-This tool updates your **existing** Windrose character saves so you can use more equipment slots—extra ring and necklace slots, a second glove slot, and more bullet and gunpowder slots—without starting a new character. Pick your character, set how many slots you want, and the patcher writes the change directly into your save (with an automatic backup first).
+This tool updates your **existing** Windrose character saves so you can use more equipment slots—extra ring and necklace slots and a second glove slot—without starting a new character. Pick your character, set how many slots you want, and the patcher writes the change directly into your save (with an automatic backup first).
 
 **You do not need any other mods installed** to run this patcher. It works on its own. Close Windrose completely before you run it, and follow the on-screen steps (including the Steam Cloud Sync reminder after a successful patch).
 
@@ -10,7 +10,6 @@ These Nexus mods may link to or bundle this patcher:
 
 - [Expanded Jewelry - More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/___)
 - [Two Glove Slots](https://www.nexusmods.com/windrose/mods/___)
-- [More Bullets and Gunpowder Slots](https://www.nexusmods.com/windrose/mods/___)
 
 ## Slots Managed
 
@@ -21,8 +20,6 @@ The patcher can change the number of the following slot types:
 | Rings      | 1–10   | 1       |
 | Necklaces  | 1–10   | 1       |
 | Gloves     | 1–2    | 1       |
-| Bullets    | 1–6    | 1       |
-| Gunpowder  | 1–6    | 1       |
 
 ## Preview
 

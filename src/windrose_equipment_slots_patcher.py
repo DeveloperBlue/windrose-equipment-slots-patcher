@@ -30,10 +30,6 @@ TRUSTED_NEXUS_MODS: tuple[tuple[str, str], ...] = (
         "Two Glove Slots",
         "https://www.nexusmods.com/windrose/mods/___",
     ),
-    (
-        "More Bullets and Gunpowder Slots",
-        "https://www.nexusmods.com/windrose/mods/___",
-    ),
 )
 
 __doc__ = f"""
@@ -41,7 +37,7 @@ __doc__ = f"""
 ==========================================================================
 
 Patches existing Windrose character saves so they work with mods that add
-extra equipment slots (rings, necklaces, gloves, bullets, gunpowder).  This
+extra equipment slots (rings, necklaces, gloves).  This
 is not a replacement for those mods; the mods should remain installed for the
 extra slots to function in-game.
 
@@ -95,12 +91,9 @@ _SLOT_BASE = "/R5BusinessRules/Inventory/SlotsParams"
 RING_PATH = f"{_SLOT_BASE}/DA_BL_Slot_Equipment_Ring.DA_BL_Slot_Equipment_Ring"
 NECK_PATH = f"{_SLOT_BASE}/DA_BL_Slot_Equipment_Necklace.DA_BL_Slot_Equipment_Necklace"
 HANDS_PATH = f"{_SLOT_BASE}/DA_BL_Slot_Equipment_Hands.DA_BL_Slot_Equipment_Hands"
-BULLET_PATH = f"{_SLOT_BASE}/DA_BL_Slot_Ammo_GunFireProjectile.DA_BL_Slot_Ammo_GunFireProjectile"
-GUNPOWDER_PATH = f"{_SLOT_BASE}/DA_BL_Slot_Ammo_Gunpowder.DA_BL_Slot_Ammo_Gunpowder"
 
 JEWELRY_TAG = "Inventory.Module.Jewelry"
 EQUIPMENT_TAG = "Inventory.Module.Equipment"
-AMMO_TAG = "Inventory.Module.Ammo"
 
 FORCE_DELETE_CONFIRM = "DELETE"
 
@@ -142,14 +135,7 @@ EQUIPMENT_MODULE = ModuleDef(
         SlotDef("gloves", "Gloves", HANDS_PATH, vanilla=1, cap_min=1, cap_max=2),
     ),
 )
-AMMO_MODULE = ModuleDef(
-    AMMO_TAG, "Ammo",
-    (
-        SlotDef("bullets", "Bullets", BULLET_PATH, vanilla=1, cap_min=1, cap_max=6),
-        SlotDef("gunpowder", "Gunpowder", GUNPOWDER_PATH, vanilla=1, cap_min=1, cap_max=6),
-    ),
-)
-MODULES: tuple[ModuleDef, ...] = (JEWELRY_MODULE, EQUIPMENT_MODULE, AMMO_MODULE)
+MODULES: tuple[ModuleDef, ...] = (JEWELRY_MODULE, EQUIPMENT_MODULE)
 
 ALL_SLOTS: tuple[SlotDef, ...] = tuple(sd for m in MODULES for sd in m.slots)
 _PATH_LABEL = {sd.path: sd.label for sd in ALL_SLOTS}
@@ -493,13 +479,11 @@ def menu_prompt(numeric_count: int, actions: list[tuple[str, str]],
 
 
 def _slot_edit_heading(sd: SlotDef) -> str:
-    """Screen title, e.g. 'Edit Bullet Slots'."""
+    """Screen title, e.g. 'Edit Ring Slots'."""
     singular = {
         "ring": "Ring",
         "neck": "Necklace",
         "gloves": "Glove",
-        "bullets": "Bullet",
-        "gunpowder": "Gunpowder",
     }
     return f"Edit {singular.get(sd.key, sd.label)} Slots"
 
