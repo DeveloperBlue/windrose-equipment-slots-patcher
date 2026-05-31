@@ -16,7 +16,7 @@ APP_NAME = "Windrose Equipment Slots Patcher"
 APP_DIR_NAME = "WindroseEquipmentSlotsPatcher"
 AUTHOR = "Michael Rooplall"
 AUTHOR_CREDIT = "Michael Rooplall / DeveloperBlue"
-GITHUB_URL = "https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher"
+GITHUB_URL = "https://github.com/DeveloperBlue/windrose-equipment-slots-patcher"
 STEAM_CLOUD_HELP_URL = f"{GITHUB_URL}#steam-cloud-sync"
 NEXUS_PROFILE_URL = "https://www.nexusmods.com/profile/DeveloperBlue"
 
@@ -298,18 +298,11 @@ def _print_trusted_sources_notice() -> None:
     print()
 
 
-def _print_steam_cloud_steps() -> None:
-    """Numbered Steam Cloud Sync steps (shared by Patch Complete)."""
-    print(_c("  1. Disable Steam Cloud Sync before launching Windrose.", _YELLOW))
-    print(_c("  2. Steam → Windrose → Properties → General", _YELLOW))
-    print(_c('     → uncheck "Keep game saves in the Steam Cloud".', _YELLOW))
-    print(_c("  3. Launch the game and verify your slots, then close it.", _YELLOW))
-    print(_c("  4. Re-enable Steam Cloud Sync.", _YELLOW))
-    print(_c(
-        "     Cloud Sync can overwrite your patch if it pulls an older save.",
-        _DIM,
-    ))
-    print(f"    {_hyperlink('See How', STEAM_CLOUD_HELP_URL, _UNDERLINE, _CYAN)}")
+def _print_steam_cloud_tip() -> None:
+    """Optional FAQ tip if Steam Cloud Sync overwrites a patched save."""
+    print(_c("  If your slots revert after launching Windrose,", _DIM))
+    print(_c("  Steam Cloud Sync may have pulled an older save.", _DIM))
+    print(f"    {_hyperlink('See FAQ', STEAM_CLOUD_HELP_URL, _UNDERLINE, _CYAN)}")
 
 
 def show_startup_notices() -> bool:
@@ -401,9 +394,7 @@ def show_patch_complete_page(
         print(_c(f"    {_char_backup_dir(folder)}", _DIM))
 
     print()
-    print("  " + _c("Before you launch Windrose", _BOLD, _YELLOW))
-    print(_c(f"  Notice {ARROW} Steam Cloud Sync", _YELLOW))
-    _print_steam_cloud_steps()
+    _print_steam_cloud_tip()
 
     print()
     print(_c("  " + "\u2500" * 56, _DIM))

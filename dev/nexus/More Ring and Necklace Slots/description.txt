@@ -11,13 +11,6 @@ Vanilla Windrose gives you [b]one ring slot[/b] and [b]one necklace slot[/b]. Th
 
 The download includes the [b]Windrose Equipment Slots Patcher[/b], which updates your current save directly. Pick your character, choose how many ring and necklace slots you want, and the patcher applies the change with an [b]automatic backup[/b] first.
 
-[quote][color=#E74C3C][b]Important — Steam Cloud Sync[/b][/color]
-You must [b]temporarily disable Steam Cloud Sync[/b] for Windrose before relaunching the game after patching. Otherwise Steam can pull your old save from the cloud and overwrite the patched save.
-
-In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i].
-
-After you launch the game and confirm the extra slots appear, [b]close Windrose[/b] and re-enable Steam Cloud Sync.[/quote]
-
 [line]
 
 [color=#D4AF37][size=4][b]Usage Instructions[/b][/size][/color]
@@ -25,16 +18,10 @@ After you launch the game and confirm the extra slots appear, [b]close Windrose[
 [list=1]
 [*][b]Close Windrose completely[/b] before running the patcher.
 [*]Download and extract this mod from the [b]Files[/b] tab.
-[*][b]Temporarily disable Steam Cloud Sync[/b] for Windrose (see the warning above):
-[list]
-[*]In Steam, right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b]
-[*]Uncheck [b]Keep game saves in the Steam Cloud[/b]
-[/list]
 [*]Run [code]windrose_equipment_slots_patcher_v*.exe[/code] from the download.
 [*]Select the character you want to update and follow the on-screen instructions.
 [*]Confirm the patch. The tool saves a backup before making any changes.
 [*]Launch Windrose and verify the extra jewelry slots appear on that character.
-[*]After confirming the patch worked, [b]close the game[/b] and re-enable Steam Cloud Sync in Steam properties.
 [/list]
 
 [color=#888888][i]To undo a patch, run the patcher again and choose [b]Reset Slots to Vanilla[/b] or [b]Restore Backup[/b]. If you want fewer slots than you currently have, unequip items from the slots you are removing first.[/i][/color]
@@ -57,7 +44,6 @@ After you launch the game and confirm the extra slots appear, [b]close Windrose[
 
 [list]
 [*]Windrose must be [b]fully closed[/b] while the patcher runs
-[*][b]Steam Cloud Sync must be disabled[/b] before you launch the game after patching (see usage steps above)
 [*]No other mods are required — this download includes everything you need for ring and necklace slots
 [/list]
 
@@ -93,10 +79,15 @@ Backups for this tool live at:
 [code]%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Backups[/code]
 [/spoiler]
 
-[spoiler=How do I disable Steam Cloud Saves?]
-In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i]
+[spoiler=My patch didn't stick / slots reverted after launching (Steam Cloud Sync)]
+In some cases, [b]Steam Cloud Sync[/b] can overwrite your patched save with an older copy from the cloud when you launch Windrose. If your extra slots disappear after launching the game, try this:
 
-After applying the patch, [b]launching the game[/b], and verifying that you see your slots, you should [b]re-enable Steam Cloud Saves[/b].
+[list=1]
+[*]In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i]
+[*]If Steam asks about a conflict, choose [b]Use Local files[/b]
+[*]Re-run the patcher if needed
+[*]After verifying the patch worked, you can re-enable Steam Cloud Sync when you quit the game
+[/list]
 [/spoiler]
 
 [spoiler=My slots don't fit on screen]
@@ -116,7 +107,7 @@ Run the exe with the [code]--nocap[/code] flag. This removes the upper limits so
 If you have discovered any bugs, feel free to:
 [list]
 [*]Leave a comment on this Nexus mod page
-[*]Open an issue on [url=https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues][b]GitHub[/b][/url]
+[*]Open an issue on [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]GitHub[/b][/url]
 [*]Send an email to [code]contact@michaelrooplall.com[/code]
 [/list]
 [/spoiler]

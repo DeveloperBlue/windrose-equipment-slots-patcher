@@ -1,10 +1,10 @@
 # Windrose Equipment Slots Patcher - v2.0
 
-By **Michael Rooplall / DeveloperBlue** — [GitHub repository](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher) · [Nexus profile](https://www.nexusmods.com/profile/DeveloperBlue)
+By **Michael Rooplall / DeveloperBlue** — [GitHub repository](https://github.com/DeveloperBlue/windrose-equipment-slots-patcher) · [Nexus profile](https://www.nexusmods.com/profile/DeveloperBlue)
 
 This tool updates your **existing** Windrose character saves so you can use more equipment slots—extra ring and necklace slots and a second glove slot—without starting a new character. Pick your character, set how many slots you want, and the patcher writes the change directly into your save (with an automatic backup first).
 
-**You do not need any other mods installed** to run this patcher. It works on its own. Close Windrose completely before you run it, and follow the on-screen steps (including the Steam Cloud Sync reminder after a successful patch).
+**You do not need any other mods installed** to run this patcher. It works on its own. Close Windrose completely before you run it, and follow the on-screen steps.
 
 These Nexus mods may link to or bundle this patcher:
 
@@ -32,30 +32,20 @@ The patcher can change the number of the following slot types:
     <td width="50%" align="center"><img src="images/2.png" alt="Patcher prompting for new ring and necklace slot counts" width="100%"/><br/><em>2. Enter the slot counts matching your Nexus mod variant</em></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><img src="images/3.png" alt="Patcher showing patch complete confirmation" width="100%"/><br/><em>3. Patch complete with pre-patch backup saved</em></td>
-    <td width="50%" align="center"><img src="images/4.png" alt="Steam Cloud Sync toggle disabled in Windrose properties" width="100%"/><br/><em>4. Temporarily disable Steam Cloud Sync before launching</em></td>
+    <td colspan="2" align="center"><img src="images/3.png" alt="Patcher showing patch complete confirmation" width="100%"/><br/><em>3. Patch complete with pre-patch backup saved</em></td>
   </tr>
 </table>
 
 
 ## How to Use
-> [!IMPORTANT]
-> You must *temporarily disable Steam Cloud Sync* for Windrose before relaunching the game. When you launch the game, Steam pulls your old save from the cloud and overwrites the new patched save. You can and should re-enable it after you verify the patcher has worked.
->
-> In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"*.
->
-> If Steam asks about a conflict, pick "Use Local files".
-
 
 ### Running the patcher
 
 *Ensure the game is fully closed*
 
-1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases)
-2. Disable Steam Cloud Sync.<br/>In Steam → right-click Windrose → Properties → General → uncheck "Keep game saves in the Steam Cloud".
-3. Run the patcher and follow the instructions
-4. Launch the game and verify that you have the extra slots
-5. Close the game and re-enable Steam Cloud Sync
+1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/releases)
+2. Run the patcher and follow the instructions
+3. Launch the game and verify that you have the extra slots
 
 ----
 
@@ -75,8 +65,8 @@ You need [Python](https://www.python.org/) 3.10 or newer.
 
 ```bash
 # Clone the project and open it
-git clone https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher.git
-cd windrose-mrns-existing-character-patcher
+git clone https://github.com/DeveloperBlue/windrose-equipment-slots-patcher.git
+cd windrose-equipment-slots-patcher
 
 # Install dependencies:
 pip install pyinstaller rocksdict
@@ -98,16 +88,18 @@ Backups for this tool live at `%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Back
 
 <a id="steam-cloud-sync"></a>
 
-## How do I disable Steam Cloud Saves?
-In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"*
+## My patch didn't stick / slots reverted after launching (Steam Cloud Sync)
 
-Note that after applying the patch, **launching the game**, and verifying that you see your slots, you should **re-enable Steam Cloud Saves**.
+In some cases, **Steam Cloud Sync** can overwrite your patched save with an older copy from the cloud when you launch Windrose. If your extra slots disappear after launching the game, try this:
+
+1. In **Steam** → right-click Windrose → Properties → General → uncheck *"Keep game saves in the Steam Cloud"*
+2. If Steam asks about a conflict, choose **Use Local files**
+3. Re-run the patcher if needed
+4. After verifying the patch worked, you can re-enable Steam Cloud Sync when you quit the game
 
 ## My slots don't fit on screen
 Depending on your monitor resolution, game resolution, and number of modified slots, some of your game UI may not fit on screen. Consider using this mod to tweak the UI scale:
 [UI Scale - HUD Scale by DaraTeaGod](https://www.nexusmods.com/windrose/mods/124)
-
-REFERENCE IMAGE
 
 ## How can I add more slots than the limit?
 Run the exe with the ``--nocap`` flag. This removes the upper limits so you can set any value. **Use with care.**
@@ -117,7 +109,7 @@ Run the exe with the ``--nocap`` flag. This removes the upper limits so you can 
 ```
 
 ## How do I report a bug
-If you have discovered any bugs, feel free to leave an issue here on [GitHub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues), leave a comment on the nexus mod, or send an email over to ``contact@michaelrooplall.com``.
+If you have discovered any bugs, feel free to leave an issue here on [GitHub](https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues), leave a comment on the nexus mod, or send an email over to ``contact@michaelrooplall.com``.
 
 ## How can I restore a pre-patched save / My save was corrupted
 If you load up the game after using the patcher and Winrose reports your save as corrupted, you can restore your backups by running the tool again.
@@ -125,8 +117,8 @@ If you load up the game after using the patcher and Winrose reports your save as
 1. Select your character
 2. Press "R" to "Restore Backups"
 3. Select which backup you want to restore, if there are multiple
-4. Go through the process of temporarily disabling Steam Cloud Sync, validating your save, and remembering to quit and re-enable it if things go well
-4. Your current non-working save is also backed up again, so no data is ever lost
+4. Launch the game and verify your save loads correctly
+5. Your current non-working save is also backed up again, so no data is ever lost
 
 If you experience any issues with the save patcher, possibly after a game update, please file a bug report [](). If you can, also provide both or any of your saves (broken and working)- this can help me narrow down any issues.
 
