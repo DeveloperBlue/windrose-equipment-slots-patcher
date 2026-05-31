@@ -964,7 +964,8 @@ def get_player_name(value: bytes) -> str | None:
 def get_player_level(value: bytes) -> int | None:
     """Character level from ``PlayerProgression.RewardLevel`` in the save BSON.
 
-    New or low-progress characters may legitimately have ``RewardLevel`` 0.
+    ``RewardLevel`` is zero-based in the save (0 on floor 1); we add 1 so the
+    displayed level matches what the game shows.
     """
     def search(doc_start: int) -> int | None:
         for t, name, vpos, _vend in iter_elements(value, doc_start):
@@ -974,7 +975,7 @@ def get_player_level(value: bytes) -> int | None:
                     if rl and rl[0] == BT_INT32:
                         lvl = read_int32(value, rl[1])
                         if 0 <= lvl <= 99999:
-                            return lvl
+                            return lvl + 1
                 found = search(vpos)
                 if found is not None:
                     return found
