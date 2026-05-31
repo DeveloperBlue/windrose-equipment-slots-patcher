@@ -12,9 +12,9 @@ These Nexus mods may link to or bundle this patcher:
 - [Two Glove Slots](https://www.nexusmods.com/windrose/mods/___)
 - [More Bullets and Gunpowder Slots](https://www.nexusmods.com/windrose/mods/___)
 
-## Slots managed
+## Slots Managed
 
-The patcher can change the following slot types for an existing character:
+The patcher can change the number of the following slot types:
 
 | Slot       | Range  | Vanilla |
 | ---------- | ------ | ------- |
@@ -52,7 +52,8 @@ The patcher can change the following slot types for an existing character:
 
 ### Running the patcher
 
-0. Ensure the game is closed
+*Ensure the game is fully closed*
+
 1. Download the latest version of the patcher from [releases](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/releases)
 2. Disable Steam Cloud Sync.<br/>In Steam → right-click Windrose → Properties → General → uncheck "Keep game saves in the Steam Cloud".
 3. Run the patcher and follow the instructions
@@ -84,10 +85,10 @@ cd windrose-mrns-existing-character-patcher
 pip install pyinstaller rocksdict
 
 # Build
-pyinstaller windrose_equipment_slots_patcher.spec
+python scripts/build.py
 ```
 
-The compiled `windrose_equipment_slots_patcher_v<version>.exe` can be found in the `dist\` folder.
+The compiled `windrose_equipment_slots_patcher_v<version>_unsigned.exe` is written to `build\development\`.
 
 ----
 # FAQs
@@ -109,6 +110,8 @@ Note that after applying the patch, **launching the game**, and verifying that y
 Depending on your monitor resolution, game resolution, and number of modified slots, some of your game UI may not fit on screen. Consider using this mod to tweak the UI scale:
 [UI Scale - HUD Scale by DaraTeaGod](https://www.nexusmods.com/windrose/mods/124)
 
+REFERENCE IMAGE
+
 ## How can I add more slots than the limit?
 Run the exe with the ``--nocap`` flag. This removes the upper limits so you can set any value. **Use with care.**
 
@@ -119,20 +122,30 @@ Run the exe with the ``--nocap`` flag. This removes the upper limits so you can 
 ## How do I report a bug
 If you have discovered any bugs, feel free to leave an issue here on [GitHub](https://github.com/DeveloperBlue/windrose-mrns-existing-character-patcher/issues), leave a comment on the nexus mod, or send an email over to ``contact@michaelrooplall.com``.
 
-## Undoing the patch
+## How can I restore a pre-patched save / My save was corrupted
+If you load up the game after using the patcher and Winrose reports your save as corrupted, you can restore your backups by running the tool again.
+
+1. Select your character
+2. Press "R" to "Restore Backups"
+3. Select which backup you want to restore, if there are multiple
+4. Go through the process of temporarily disabling Steam Cloud Sync, validating your save, and remembering to quit and re-enable it if things go well
+4. Your current non-working save is also backed up again, so no data is ever lost
+
+If you experience any issues with the save patcher, possibly after a game update, please file a bug report [](). If you can, also provide both or any of your saves (broken and working)- this can help me narrow down any issues.
+
+## Undoing the patch / Reset to vanilla
 
 If you want to "undo" the patcher and remove the extra slots:
 - Re-run the patcher, select your character, and choose **Reset Slots to Vanilla** (or **Restore Backup** to roll back to an earlier snapshot).
 
 > [!NOTE]
-> You cannot reduce a slot count below a slot that still holds an item. Unequip / empty those slots in-game first, or confirm the destructive removal when prompted.
+> If you try to delete a slot that still holds an item, the tool will by default stop you. This is so you can unequip / empty those slots in-game first. You can also confirm the destructive removal of the slot if you want to.
 
 ## Why isn't this just an installable mod?
-After about 40+ hours of digging into the game's file dumps and running dozens and dozens of trials, I was not able to successfully inject the slots via UE4SS. If in the future anyone is able to accomplish this, I would love to know. For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of tests, I was not able to successfully "inject" the slots via the modding framework for Unreal (UE4SS). If in the future anyone is able to accomplish this, I would love to know. For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
 
 ----
 # Credits
 
-- **[More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350)** — inspiration for expanding ring and necklace equipment slots in Windrose.
-- **`checkpoint_zip.py`** — Adapted from [agreenbeen/windrose-save-tool](https://github.com/agreenbeen/windrose-save-tool/tree/main) (rebuilds the game's `RocksDB_v2_Backups` checkpoint ZIP after patching so changes persist on load).
-- **RocksDB save format** — Thanks to the same project for documenting that Windrose requires uncompressed saves in RocksDB; that cleared up a lot of headaches during development. 
+- **[More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/350)** — inspiration for expanding ring and necklace equipment slots in Windrose, required creating a new character.
+- **[agreenbeen/windrose-save-tool](https://github.com/agreenbeen/windrose-save-tool/tree/main)** — For the both the **`checkpoint_zip.py`** and the information on the **RocksDB save format**. The former rebuilds the game's `RocksDB_v2_Backups` checkpoint ZIP after patching so changes persist on load and hte latter documented that Windrose requires uncompressed saves in RocksDB; that cleared up a lot of headaches during development. 

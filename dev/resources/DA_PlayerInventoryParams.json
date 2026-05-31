@@ -1,0 +1,341 @@
+{
+	"$type": "R5BLInventoryParams",
+	"InventoryTag": {
+		"TagName": "Inventory.Type.Player"
+	},
+	"DefaultTraits": [
+		{
+			"TagName": "Inventory.Trait.AutoFillAmmo"
+		}
+	],
+	"InventoryPermission": "Personal",
+	"InventoryModules": [
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Default"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Default.DA_BL_Slot_Default",
+					"CountSlots": 16
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": false,
+				"ExtendSlotParams": "None",
+				"ExtendCountSlots": 0
+			},
+			"BlockOperationTags": []
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Ammo"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Ammo_GunFireProjectile.DA_BL_Slot_Ammo_GunFireProjectile",
+					"CountSlots": 1
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Ammo_Gunpowder.DA_BL_Slot_Ammo_Gunpowder",
+					"CountSlots": 1
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": false,
+				"ExtendSlotParams": "None",
+				"ExtendCountSlots": 0
+			},
+			"BlockOperationTags": []
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Equipment"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Head.DA_BL_Slot_Equipment_Head",
+					"CountSlots": 1
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Torso.DA_BL_Slot_Equipment_Torso",
+					"CountSlots": 1
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Legs.DA_BL_Slot_Equipment_Legs",
+					"CountSlots": 1
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Hands.DA_BL_Slot_Equipment_Hands",
+					"CountSlots": 1
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Boots.DA_BL_Slot_Equipment_Boots",
+					"CountSlots": 1
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": false,
+				"ExtendSlotParams": "None",
+				"ExtendCountSlots": 0
+			},
+			"BlockOperationTags": []
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Action"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Default.DA_BL_Slot_Default",
+					"CountSlots": 8
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": false,
+				"ExtendSlotParams": "None",
+				"ExtendCountSlots": 0
+			},
+			"BlockOperationTags": []
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Jewelry"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Ring.DA_BL_Slot_Equipment_Ring",
+					"CountSlots": 2
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Necklace.DA_BL_Slot_Equipment_Necklace",
+					"CountSlots": 1
+				},
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Equipment_Backpack.DA_BL_Slot_Equipment_Backpack",
+					"CountSlots": 1
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": false,
+				"ExtendSlotParams": "None",
+				"ExtendCountSlots": 0
+			},
+			"BlockOperationTags": []
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Quest"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Quest.DA_BL_Slot_Quest",
+					"CountSlots": 0
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": true,
+				"ExtendSlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Quest.DA_BL_Slot_Quest",
+				"ExtendCountSlots": 1
+			},
+			"BlockOperationTags": [
+				{
+					"TagName": "Inventory.Module.Trait.Block.Drop"
+				}
+			]
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Invisible"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Invisible.DA_BL_Slot_Invisible",
+					"CountSlots": 0
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": true,
+				"ExtendSlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Invisible.DA_BL_Slot_Invisible",
+				"ExtendCountSlots": 1
+			},
+			"BlockOperationTags": [
+				{
+					"TagName": "Inventory.Module.Trait.Block.Drop"
+				}
+			]
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Currency"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Currency.DA_BL_Slot_Currency",
+					"CountSlots": 0
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": true,
+				"ExtendSlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Currency.DA_BL_Slot_Currency",
+				"ExtendCountSlots": 1
+			},
+			"BlockOperationTags": [
+				{
+					"TagName": "Inventory.Module.Trait.Block.Drop"
+				}
+			]
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.Customization"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Player_ShipCustomization.DA_BL_Slot_Player_ShipCustomization",
+					"CountSlots": 0
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": true,
+				"ExtendSlotParams": "/R5BusinessRules/Inventory/SlotsParams/DA_BL_Slot_Player_ShipCustomization.DA_BL_Slot_Player_ShipCustomization",
+				"ExtendCountSlots": 1
+			},
+			"BlockOperationTags": [
+				{
+					"TagName": "Inventory.Module.Trait.Block.Drop"
+				}
+			]
+		},
+		{
+			"ModuleTag": {
+				"TagName": "Inventory.Module.NPC"
+			},
+			"Slots": [
+				{
+					"SlotParams": "/R5BusinessRules/Inventory/SlotsParams/NPC/DA_BL_Slot_NPC_Common.DA_BL_Slot_NPC_Common",
+					"CountSlots": 0
+				}
+			],
+			"DynamicData": {
+				"bDynamicModule": true,
+				"ExtendSlotParams": "/R5BusinessRules/Inventory/SlotsParams/NPC/DA_BL_Slot_NPC_Common.DA_BL_Slot_NPC_Common",
+				"ExtendCountSlots": 1
+			},
+			"BlockOperationTags": []
+		}
+	],
+	"BlockedModulesForActionMove": [
+		{
+			"TagName": "Inventory.Module.Equipment"
+		},
+		{
+			"TagName": "Inventory.Module.Currency"
+		},
+		{
+			"TagName": "Inventory.Module.Customization"
+		},
+		{
+			"TagName": "Inventory.Module.Jewelry"
+		},
+		{
+			"TagName": "Inventory.Module.Invisible"
+		},
+		{
+			"TagName": "Inventory.Module.Quest"
+		},
+		{
+			"TagName": "Inventory.Module.NPC"
+		},
+		{
+			"TagName": "Inventory.Module.Ammo"
+		}
+	],
+	"EffectsToRemoveOnMoveFromInventory": [
+		{
+			"TagName": "Inventory.Effect.Equipped"
+		},
+		{
+			"TagName": "Inventory.Effect.Activated"
+		}
+	],
+	"BlockInventoryOperationsByTraits": {
+		"BlockedByInventoryOperationType": [],
+		"BlockedByInventoryActionType": [
+			{
+				"ToInventoryTag": {
+					"TagName": "Inventory.Type.Box"
+				},
+				"FromModuleTags": [
+					{
+						"TagName": "Inventory.Module.Equipment"
+					},
+					{
+						"TagName": "Inventory.Module.Currency"
+					},
+					{
+						"TagName": "Inventory.Module.Customization"
+					},
+					{
+						"TagName": "Inventory.Module.Jewelry"
+					},
+					{
+						"TagName": "Inventory.Module.Invisible"
+					},
+					{
+						"TagName": "Inventory.Module.Quest"
+					},
+					{
+						"TagName": "Inventory.Module.NPC"
+					},
+					{
+						"TagName": "Inventory.Module.Ammo"
+					},
+					{
+						"TagName": "Inventory.Module.Action"
+					}
+				],
+				"InventoryAction": "FastMoveClick"
+			},
+			{
+				"ToInventoryTag": {
+					"TagName": "Inventory.Type.Ship"
+				},
+				"FromModuleTags": [
+					{
+						"TagName": "Inventory.Module.Equipment"
+					},
+					{
+						"TagName": "Inventory.Module.Currency"
+					},
+					{
+						"TagName": "Inventory.Module.Customization"
+					},
+					{
+						"TagName": "Inventory.Module.Jewelry"
+					},
+					{
+						"TagName": "Inventory.Module.Invisible"
+					},
+					{
+						"TagName": "Inventory.Module.Quest"
+					},
+					{
+						"TagName": "Inventory.Module.NPC"
+					},
+					{
+						"TagName": "Inventory.Module.Ammo"
+					},
+					{
+						"TagName": "Inventory.Module.Action"
+					}
+				],
+				"InventoryAction": "FastMoveClick"
+			}
+		]
+	},
+	"AssetBundleData": {
+		"Bundles": []
+	},
+	"NativeClass": "/Script/CoreUObject.Class'/Script/R5BusinessRules.R5BLInventoryParams'"
+}

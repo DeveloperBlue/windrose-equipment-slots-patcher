@@ -40,7 +40,7 @@ __doc__ = f"""
 {APP_NAME} - {__version_display__}
 ==========================================================================
 
-Patches EXISTING Windrose character saves so they work with mods that add
+Patches existing Windrose character saves so they work with mods that add
 extra equipment slots (rings, necklaces, gloves, bullets, gunpowder).  This
 is not a replacement for those mods; the mods should remain installed for the
 extra slots to function in-game.
@@ -80,7 +80,7 @@ except ImportError:
 try:
     from checkpoint_zip import update_checkpoint_zip
 except ImportError:
-    print("ERROR: checkpoint_zip.py is missing from the script folder.")
+    print("ERROR: checkpoint_zip.py is missing from the src folder.")
     input("\nPress Enter to exit...")
     sys.exit(1)
 
