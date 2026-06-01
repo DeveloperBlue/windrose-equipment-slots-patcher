@@ -90,6 +90,10 @@ In some cases, [b]Steam Cloud Sync[/b] can overwrite your patched save with an o
 [/list]
 [/spoiler]
 
+[spoiler=Equipped item stats don't show correctly on the Stat Screen]
+Sometimes the game doesn't immediately recalculate stats from items equipped in the new slots. If the values don't look correct on your Stat Screen, unequip and re-equip the item — that usually updates them.
+[/spoiler]
+
 [spoiler=My slots don't fit on screen]
 Depending on your monitor resolution, game resolution, and number of modified slots, some of your game UI may not fit on screen.
 
@@ -104,22 +108,31 @@ Run the exe with the [code]--nocap[/code] flag. This removes the upper limits so
 [/spoiler]
 
 [spoiler=How do I report a bug?]
-If you have discovered any bugs, feel free to:
-[list]
-[*]Leave a comment on this Nexus mod page
-[*]Open an issue on [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]GitHub[/b][/url]
-[*]Send an email to [code]contact@michaelrooplall.com[/code]
-[/list]
+If you have discovered any bugs, feel free to leave an issue on [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]GitHub[/b][/url], leave a comment on this Nexus mod page, or send an email to [code]contact@michaelrooplall.com[/code].
 [/spoiler]
 
-[spoiler=How do I undo the patch?]
-Re-run the patcher, select your character, and choose [b]Reset Slots to Vanilla[/b] (or [b]Restore Backup[/b] to roll back to an earlier snapshot).
+[spoiler=How can I restore a pre-patched save / My save was corrupted]
+If you load up the game after using the patcher and Windrose reports your save as corrupted, you can restore your backups by running the tool again.
 
-You cannot reduce a slot count below a slot that still holds an item. Unequip / empty those slots in-game first, or confirm the destructive removal when prompted.
+[list=1]
+[*]Select your character
+[*]Press [b]R[/b] to [b]Restore Backups[/b]
+[*]Select which backup you want to restore, if there are multiple
+[*]Launch the game and verify your save loads correctly
+[*]Your current non-working save is also backed up again, so no data is ever lost
+[/list]
+
+If you experience any issues with the save patcher, possibly after a game update, please file a [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]bug report[/b][/url]. If you can, also provide both or any of your saves (broken and working) — this can help narrow down any issues.
+[/spoiler]
+
+[spoiler=Undoing the patch / Reset to vanilla]
+If you want to undo the patcher and remove the extra slots, re-run the patcher, select your character, and choose [b]Reset Slots to Vanilla[/b] (or [b]Restore Backup[/b] to roll back to an earlier snapshot).
+
+[color=#888888][i]If you try to delete a slot that still holds an item, the tool will by default stop you. This is so you can unequip / empty those slots in-game first. You can also confirm the destructive removal of the slot if you want to.[/i][/color]
 [/spoiler]
 
 [spoiler=Why isn't this just an installable mod?]
-After about 40+ hours of digging into the game's file dumps and running dozens and dozens of trials, I was not able to successfully inject the slots via UE4SS. If in the future anyone is able to accomplish this, I would love to know.
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of tests, I was not able to successfully "inject" the slots via the modding framework for Unreal (UE4SS). If in the future anyone is able to accomplish this, I would love to know.
 
 For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
 [/spoiler]

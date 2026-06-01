@@ -47,6 +47,9 @@ The patcher can change the number of the following slot types:
 2. Run the patcher and follow the instructions
 3. Launch the game and verify that you have the extra slots
 
+> [!IMPORTANT]
+> Sometimes the game doesn't correctly recalculate stats from items equipped in the new slots. If the values don't look correct on your Stat Screen, unequip and re-equip the items — that usually updates them.
+
 ----
 
 If you've enjoyed this mod, want to see it maintained, or support any of my other projects, consider BuyMeACoffee!

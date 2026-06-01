@@ -1,23 +1,147 @@
-[b][size=3]Description[/size][/b]
-Describe the main purpose of your mod
+[center][size=5][color=#D4AF37][b]Two Glove Slots[/b][/color][/size]
+[size=2][i]Add a second glove equipment slot on your existing Windrose characters[/i][/size][/center]
 
-[b][size=3]Usage instructions[/size][/b]
-Lay out any steps users must follow to install your mod
+[line]
 
-[b][size=3]Main features[/size][/b]
-Describe the core features of your mod
+[color=#D4AF37][size=4][b]Description[/b][/size][/color]
 
-[b][size=3]Requirements[/size][/b]
-Provide info on additional required steps, resources, or mods
+Equip gloves in both hands on your existing Windrose characters.
 
-[b][size=3]Optional mods[/size][/b]
-List any recommended companion mods
+Vanilla Windrose gives you [b]one glove slot[/b]. This mod raises that limit so you can wear a glove in each hand — up to [color=#D4AF37][b]2 glove slots[/b][/color].
 
-[b][size=3]Other mods[/size][/b]
-Link to related mods from the same patcher series
+The download includes the [b]Windrose Equipment Slots Patcher[/b], which updates your current save directly. Pick your character, choose how many glove slots you want, and the patcher applies the change with an [b]automatic backup[/b] first.
 
-[b][size=3]FAQs[/size][/b]
-Add frequently asked questions and answers
+[line]
 
-[b][size=3]Credits[/size][/b]
-Say thanks to anyone who inspired or helped you
+[color=#D4AF37][size=4][b]Usage Instructions[/b][/size][/color]
+
+[list=1]
+[*][b]Close Windrose completely[/b] before running the patcher.
+[*]Download and extract this mod from the [b]Files[/b] tab.
+[*]Run [code]windrose_equipment_slots_patcher_v*.exe[/code] from the download.
+[*]Select the character you want to update and follow the on-screen instructions.
+[*]Confirm the patch. The tool saves a backup before making any changes.
+[*]Launch Windrose and verify the extra glove slot appears on that character.
+[/list]
+
+[color=#888888][i]To undo a patch, run the patcher again and choose [b]Reset Slots to Vanilla[/b] or [b]Restore Backup[/b]. If you want fewer slots than you currently have, unequip items from the slots you are removing first.[/i][/color]
+
+[line]
+
+[color=#D4AF37][size=4][b]Main Features[/b][/size][/color]
+
+[list]
+[*][b]Second glove slot[/b] — expand from 1 (vanilla) up to 2 glove slots per character
+[*][b]Works on existing characters[/b] — no need to reroll or lose progress
+[*][b]Automatic backups[/b] — every patch and restore creates a snapshot you can roll back to
+[*][b]Simple guided patcher[/b] — select a character, enter slot counts, confirm
+[*][b]Reset to vanilla[/b] — built-in option to remove extra slots when you want the default layout back
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Requirements[/b][/size][/color]
+
+[list]
+[*]Windrose must be [b]fully closed[/b] while the patcher runs
+[*]No other mods are required — this download includes everything you need for glove slots
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Optional Mods[/b][/size][/color]
+
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/124][b]UI Scale - HUD Scale[/b][/url] by DaraTeaGod — recommended if extra slots push equipment UI off-screen at your resolution.
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Other Mods[/b][/size][/color]
+
+[color=#888888][i]These companion mods use the same [b]Windrose Equipment Slots Patcher[/b] to adjust other slot types:[/i][/color]
+
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/___][b]More Ring and Necklace Slots[/b][/url] — expand ring and necklace slots
+[/list]
+
+[line]
+
+[color=#D4AF37][size=4][b]Frequently Asked Questions[/b][/size][/color]
+
+[spoiler=How do I backup my saves?]
+This tool automatically creates a backup before every patch and before every backup restore.
+
+If you want to manually backup your saves yourself, you can find them at:
+[code]%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\[/code]
+
+Backups for this tool live at:
+[code]%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Backups[/code]
+[/spoiler]
+
+[spoiler=My patch didn't stick / slots reverted after launching (Steam Cloud Sync)]
+In some cases, [b]Steam Cloud Sync[/b] can overwrite your patched save with an older copy from the cloud when you launch Windrose. If your extra slots disappear after launching the game, try this:
+
+[list=1]
+[*]In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i]
+[*]If Steam asks about a conflict, choose [b]Use Local files[/b]
+[*]Re-run the patcher if needed
+[*]After verifying the patch worked, you can re-enable Steam Cloud Sync when you quit the game
+[/list]
+[/spoiler]
+
+[spoiler=Equipped item stats don't show correctly on the Stat Screen]
+Sometimes the game doesn't immediately recalculate stats from items equipped in the new slots. If the values don't look correct on your Stat Screen, unequip and re-equip the item — that usually updates them.
+[/spoiler]
+
+[spoiler=My slots don't fit on screen]
+Depending on your monitor resolution, game resolution, and number of modified slots, some of your game UI may not fit on screen.
+
+Consider using this mod to tweak the UI scale:
+[url=https://www.nexusmods.com/windrose/mods/124][b]UI Scale - HUD Scale[/b][/url] by DaraTeaGod
+[/spoiler]
+
+[spoiler=How can I add more slots than the limit?]
+Run the exe with the [code]--nocap[/code] flag. This removes the upper limits so you can set any value. [color=#E74C3C][b]Use with care.[/b][/color]
+
+[code]windrose_equipment_slots_patcher_v<version>.exe --nocap[/code]
+[/spoiler]
+
+[spoiler=How do I report a bug?]
+If you have discovered any bugs, feel free to leave an issue on [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]GitHub[/b][/url], leave a comment on this Nexus mod page, or send an email to [code]contact@michaelrooplall.com[/code].
+[/spoiler]
+
+[spoiler=How can I restore a pre-patched save / My save was corrupted]
+If you load up the game after using the patcher and Windrose reports your save as corrupted, you can restore your backups by running the tool again.
+
+[list=1]
+[*]Select your character
+[*]Press [b]R[/b] to [b]Restore Backups[/b]
+[*]Select which backup you want to restore, if there are multiple
+[*]Launch the game and verify your save loads correctly
+[*]Your current non-working save is also backed up again, so no data is ever lost
+[/list]
+
+If you experience any issues with the save patcher, possibly after a game update, please file a [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]bug report[/b][/url]. If you can, also provide both or any of your saves (broken and working) — this can help narrow down any issues.
+[/spoiler]
+
+[spoiler=Undoing the patch / Reset to vanilla]
+If you want to undo the patcher and remove the extra slots, re-run the patcher, select your character, and choose [b]Reset Slots to Vanilla[/b] (or [b]Restore Backup[/b] to roll back to an earlier snapshot).
+
+[color=#888888][i]If you try to delete a slot that still holds an item, the tool will by default stop you. This is so you can unequip / empty those slots in-game first. You can also confirm the destructive removal of the slot if you want to.[/i][/color]
+[/spoiler]
+
+[spoiler=Why isn't this just an installable mod?]
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of tests, I was not able to successfully "inject" the slots via the modding framework for Unreal (UE4SS). If in the future anyone is able to accomplish this, I would love to know.
+
+For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
+[/spoiler]
+
+[line]
+
+[color=#D4AF37][size=4][b]Credits[/b][/size][/color]
+
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/350][b]More Ring and Necklace Slots[/b][/url] — inspiration for expanding equipment slots in Windrose. Only worked for new characters.
+[*][url=https://github.com/agreenbeen/windrose-save-tool][b]agreenbeen/windrose-save-tool[/b][/url] — [code]checkpoint_zip.py[/code] adapted from this project; its RocksDB save-format notes were essential for getting patches to persist on load.
+[/list]
