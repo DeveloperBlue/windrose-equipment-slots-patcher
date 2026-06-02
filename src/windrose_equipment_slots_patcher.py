@@ -20,18 +20,6 @@ GITHUB_URL = "https://github.com/DeveloperBlue/windrose-equipment-slots-patcher"
 STEAM_CLOUD_HELP_URL = f"{GITHUB_URL}#steam-cloud-sync"
 NEXUS_PROFILE_URL = "https://www.nexusmods.com/profile/DeveloperBlue"
 
-# Nexus mods that may distribute or reference this patcher (placeholder mod URLs).
-TRUSTED_NEXUS_MODS: tuple[tuple[str, str], ...] = (
-    (
-        "Expanded Jewelry - More Ring and Necklace Slots",
-        "https://www.nexusmods.com/windrose/mods/___",
-    ),
-    (
-        "Two Glove Slots",
-        "https://www.nexusmods.com/windrose/mods/___",
-    ),
-)
-
 __doc__ = f"""
 {APP_NAME} - {__version_display__}
 ==========================================================================
@@ -288,34 +276,11 @@ def _print_game_closed_warning() -> None:
     print()
 
 
-def _print_trusted_sources_notice() -> None:
-    print(_c("  Trusted sources only", _BOLD, _MAGENTA))
-    print(_c("  Run only if you downloaded from one of these links.", _DIM))
-    print(f"    {_hyperlink('GitHub', GITHUB_URL, _UNDERLINE, _CYAN)}")
-    for mod_name, mod_url in TRUSTED_NEXUS_MODS:
-        label = f"Nexus Mods - {mod_name}"
-        print(f"    {_hyperlink(label, mod_url, _UNDERLINE, _CYAN)}")
-    print()
-
-
 def _print_steam_cloud_tip() -> None:
     """Optional FAQ tip if Steam Cloud Sync overwrites a patched save."""
     print(_c("  If your slots revert after launching Windrose,", _DIM))
     print(_c("  Steam Cloud Sync may have pulled an older save.", _DIM))
     print(f"    {_hyperlink('See FAQ', STEAM_CLOUD_HELP_URL, _UNDERLINE, _CYAN)}")
-
-
-def show_startup_notices() -> bool:
-    """One-time reminders shown when the patcher starts. False if the user quits."""
-    page_header("Before You Begin")
-    _print_trusted_sources_notice()
-    _print_game_closed_warning()
-    print(
-        "  "
-        + _c("Press any key to begin", _BOLD, _CYAN)
-        + ", or [Q] to quit"
-    )
-    return _wait_key_or_quit()
 
 
 def _print_menu_option(key: str, label: str, *, highlight: bool = False) -> None:
@@ -1333,7 +1298,6 @@ def confirm_and_apply(folder: str, value: bytes, name: str,
                 edits[sd.key] = targets.get(sd.key, c["live"])
 
     page_header("Review Changes", name)
-    _print_game_closed_warning()
     print("  The following changes will be applied:")
     print()
     for sd, old, new, bp in changes:
@@ -1549,6 +1513,7 @@ def character_menu(folder: str, *, can_back: bool) -> str:
             return "back"
 
         level = get_player_level(value)
+        _print_game_closed_warning()
         print(f"  Character : {_c(name, _BOLD)}")
         print(f"  ID        : {_c(Path(folder).name, _DIM)}")
         if level is not None:
@@ -1662,8 +1627,6 @@ def run_app(argv: list[str]) -> None:
     global NOCAP
     NOCAP, path_arg = parse_args(argv)
     _init_io()
-    if not show_startup_notices():
-        return
 
     if NOCAP:
         page_header("No-cap mode enabled")
