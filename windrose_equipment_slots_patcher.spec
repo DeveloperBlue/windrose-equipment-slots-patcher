@@ -45,4 +45,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=str(_spec_dir / "windrose_equipment_slots_patcher.ico"),
 )

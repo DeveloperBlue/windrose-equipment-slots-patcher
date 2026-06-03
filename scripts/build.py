@@ -35,7 +35,7 @@ class ReleaseBundle:
 
 # One zip per Nexus mod that distributes this patcher.
 RELEASE_BUNDLES: tuple[ReleaseBundle, ...] = (
-    ReleaseBundle("two-glove-slots"),
+    ReleaseBundle("double-glove-slots"),
     ReleaseBundle("more-ring-and-necklace-slots"),
 )
 
