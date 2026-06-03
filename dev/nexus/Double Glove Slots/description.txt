@@ -1,3 +1,5 @@
+[img]https://staticdelivery.nexusmods.com/mods/8851/images/headers/473_1780491216.jpg[/img]
+
 [center][size=5][color=#D4AF37][b]Double Glove Slots[/b][/color][/size]
 [size=2][i]Add a second glove equipment slot on your existing Windrose characters[/i][/size]
 [size=2]By [b]Michael Rooplall / DeveloperBlue[/b] — [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher][b]GitHub[/b][/url] · [url=https://www.nexusmods.com/profile/DeveloperBlue][b]Nexus profile[/b][/url][/size][/center]
