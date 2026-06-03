@@ -33,14 +33,16 @@ The patcher can change the number of the following slot types:
 
 <table>
   <tr>
-    <td colspan="2" align="center"><img src="images/5.jpg" alt="In-game character inventory showing extra ring and necklace slots after patching" width="100%"/><br/><em>Existing character with extra ring & necklace slots after patching</em></td>
+    <td width="50%" align="center"><img src="images/mrns_2_rings_2_necklaces.png" alt="In-game inventory with two ring and two necklace slots equipped" width="100%"/><br/><em>Existing character with extra ring &amp; necklace slots after patching</em></td>
+    <td width="50%" align="center"><img src="images/double-glove-slots-example.png" alt="In-game inventory with two glove slots equipped" width="100%"/><br/><em>Existing character with a second glove slot after patching</em></td>
   </tr>
   <tr>
-    <td width="50%" align="center"><img src="images/1.png" alt="Patcher character selection menu" width="100%"/><br/><em>1. Select the character to patch</em></td>
-    <td width="50%" align="center"><img src="images/2.png" alt="Patcher prompting for new ring and necklace slot counts" width="100%"/><br/><em>2. Enter the slot counts matching your Nexus mod variant</em></td>
+    <td width="50%" align="center"><img src="images/wesp_1_character_selector.png" alt="Patcher character selection screen" width="100%"/><br/><em>1. Select the character to patch</em></td>
+    <td width="50%" align="center"><img src="images/wesp_2_main_menu.png" alt="Patcher main menu showing current slot counts" width="100%"/><br/><em>2. Review current slots and choose an action</em></td>
   </tr>
   <tr>
-    <td colspan="2" align="center"><img src="images/3.png" alt="Patcher showing patch complete confirmation" width="100%"/><br/><em>3. Patch complete with pre-patch backup saved</em></td>
+    <td width="50%" align="center"><img src="images/wesp_3_slot_editor.png" alt="Patcher slot editor for rings, necklaces, and gloves" width="100%"/><br/><em>3. Set ring, necklace, and glove slot counts</em></td>
+    <td width="50%" align="center"><img src="images/wesp_4_success.png" alt="Patcher patch complete confirmation with backup path" width="100%"/><br/><em>4. Patch complete — automatic backup saved</em></td>
   </tr>
 </table>
 
