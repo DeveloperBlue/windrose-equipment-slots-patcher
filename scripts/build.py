@@ -12,6 +12,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import zipfile
+from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -21,6 +23,20 @@ REQUIRED_SIGNING_FIELDS = (
     "CodeSigningAccountName",
     "CertificateProfileName",
     "TenantId",
+)
+
+
+@dataclass(frozen=True)
+class ReleaseBundle:
+    """Nexus mod download: {zip_stem}-v{version}.zip containing the signed .exe."""
+
+    zip_stem: str
+
+
+# One zip per Nexus mod that distributes this patcher.
+RELEASE_BUNDLES: tuple[ReleaseBundle, ...] = (
+    ReleaseBundle("two-glove-slots"),
+    ReleaseBundle("more-ring-and-necklace-slots"),
 )
 
 
@@ -134,6 +150,22 @@ def sha256_hex(path: Path) -> str:
     return digest.hexdigest()
 
 
+def create_release_bundles(exe: Path, version: str, output_dir: Path) -> None:
+    """Zip the signed executable once per Nexus mod release name."""
+    for bundle in RELEASE_BUNDLES:
+        zip_path = output_dir / f"{bundle.zip_stem}-v{version}.zip"
+        zip_path.unlink(missing_ok=True)
+        with zipfile.ZipFile(
+            zip_path,
+            "w",
+            compression=zipfile.ZIP_DEFLATED,
+            compresslevel=9,
+        ) as zf:
+            zf.write(exe, arcname=exe.name)
+        print(f"Bundle: {zip_path}")
+        print(f"SHA256: {sha256_hex(zip_path)}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -165,6 +197,7 @@ def main() -> None:
         sign_release(built_exe, load_config())
         print(f"Release: {built_exe}")
         print(f"SHA256: {sha256_hex(built_exe)}")
+        create_release_bundles(built_exe, version, output_dir)
     else:
         final_exe = output_dir / unsigned_name
         final_exe.unlink(missing_ok=True)
