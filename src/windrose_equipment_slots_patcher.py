@@ -365,7 +365,7 @@ def show_patch_complete_page(
     print(_c("  " + "\u2500" * 56, _DIM))
     print()
     print("  Press [Q] to Exit     " + _c("\u00b7", _DIM)
-          + "     press any key to return to the menu")
+          + "     Press any key to return to the menu")
     print()
     print(_c("  You can now close this tool when you are done.", _DIM))
     print()
