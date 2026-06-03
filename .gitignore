@@ -1,7 +1,7 @@
 # Local build secrets (use build.config.template.json)
 build.config.json
 
-# PyInstaller
+# Nuitka / build output
 build/
 
 # Python

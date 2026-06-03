@@ -82,7 +82,7 @@ git clone https://github.com/DeveloperBlue/windrose-equipment-slots-patcher.git
 cd windrose-equipment-slots-patcher
 
 # Install dependencies:
-pip install pyinstaller rocksdict
+pip install "nuitka[onefile]" rocksdict
 
 # Build
 python scripts/build.py

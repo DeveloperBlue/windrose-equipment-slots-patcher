@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build windrose_equipment_slots_patcher.exe with PyInstaller."""
+"""Build windrose_equipment_slots_patcher.exe with Nuitka."""
 
 from __future__ import annotations
 
@@ -70,19 +70,29 @@ def load_config() -> dict:
     return json.loads(config_path.read_text(encoding="utf-8"))
 
 
-def pyinstaller(output_dir: Path, work_dir: Path) -> None:
+def nuitka(output_dir: Path, work_dir: Path, version: str) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     work_dir.mkdir(parents=True, exist_ok=True)
     run(
         [
-            "pyinstaller",
-            "--distpath",
-            str(output_dir),
-            "--workpath",
-            str(work_dir),
-            "--noconfirm",
-            str(ROOT / "windrose_equipment_slots_patcher.spec"),
-        ]
+            sys.executable,
+            "-m",
+            "nuitka",
+            "--onefile",
+            "--assume-yes-for-downloads",
+            "--output-dir=" + str(output_dir),
+            "--output-filename=" + f"windrose_equipment_slots_patcher_v{version}.exe",
+            "--windows-icon-from-ico=" + str(ROOT / "windrose_equipment_slots_patcher.ico"),
+            "--windows-console-mode=force",
+            "--include-windows-runtime-dlls=no",
+            "--nofollow-import-to=tkinter",
+            "--nofollow-import-to=unittest",
+            "--nofollow-import-to=email",
+            "--nofollow-import-to=http",
+            "--nofollow-import-to=xml",
+            str(ROOT / "src" / "windrose_equipment_slots_patcher.py"),
+        ],
+        cwd=work_dir,
     )
 
 
@@ -187,7 +197,7 @@ def main() -> None:
         output_dir = ROOT / "build" / "development"
         work_dir = ROOT / "build" / "development-work"
 
-    pyinstaller(output_dir, work_dir)
+    nuitka(output_dir, work_dir, version)
 
     built_exe = output_dir / release_name
     if not built_exe.is_file():
