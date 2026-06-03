@@ -1,6 +1,43 @@
-debug/
-mod/
+# Local build secrets (use build.config.template.json)
+build.config.json
+
+# PyInstaller
 build/
-dist/
-dev/
+
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+.installed.cfg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Local dev
+debug/
+
+# IDE & editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs & scratch
+*.log
+Untitled

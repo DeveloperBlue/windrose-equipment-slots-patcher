@@ -1,0 +1,11 @@
+{
+  "signtool": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.22621.0\\x64\\signtool.exe",
+  "azureCodeSigningDlib": "C:\\Users\\<USER>\\AppData\\Local\\Microsoft\\MicrosoftArtifactSigningClientTools\\Azure.CodeSigning.Dlib.dll",
+  "timestampServer": "http://timestamp.acs.microsoft.com",
+  "artifactSigning": {
+    "Endpoint": "https://eus.codesigning.azure.net/",
+    "CodeSigningAccountName": "your-trusted-signing-account-name",
+    "CertificateProfileName": "MyPublicReleaseProfile",
+    "TenantId" : "your-tenant-id"
+  }
+}

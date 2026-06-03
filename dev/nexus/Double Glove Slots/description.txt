@@ -1,0 +1,122 @@
+[center][size=5][color=#D4AF37][b]Double Glove Slots[/b][/color][/size]
+[size=2][i]Add a second glove equipment slot on your existing Windrose characters[/i][/size]
+[size=2]By [b]Michael Rooplall / DeveloperBlue[/b] — [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher][b]GitHub[/b][/url] · [url=https://www.nexusmods.com/profile/DeveloperBlue][b]Nexus profile[/b][/url][/size][/center]
+
+[line]
+
+[color=#D4AF37][size=4][b]Description[/b][/size][/color]
+
+This equipment slot patcher allows you to add a second glove slot on your existing Windrose character. Just download the tool, pick your character, adjust the slots, and apply changes.
+
+Vanilla Windrose gives you [b]one glove slot[/b]. This mod raises that limit to [color=#D4AF37][b]2 glove slots[/b][/color] so you can equip two gloves.
+
+The extra slot allows you to have an additional 2-slot bonus effect, so you can have up to three active armor buffs at the same time.
+
+[line]
+
+[color=#D4AF37][size=4][b]Usage Instructions[/b][/size][/color]
+
+[color=#888888][i]Ensure Windrose is fully closed before running the patcher.[/i][/color]
+[list=1]
+[*]Download and extract this mod from the [b]Files[/b] tab.
+[*]Run [font=monospace]windrose_equipment_slots_patcher_v*.exe[/font] from the download.
+[*]Select the character you want to update and follow the on-screen instructions.
+[*]Confirm the patch. The tool saves a backup before making any changes.
+[*]Launch Windrose and verify the extra glove slot appears on that character.
+[/list]
+
+[color=#888888][i]Note: The last glove you equip is the one that appears visually on your character.[/i][/color]
+
+[color=#888888][i]To undo a patch, run the patcher again and choose [b]Reset Slots to Vanilla[/b] or [b]Restore Backup[/b]. If you want fewer slots than you currently have, unequip items from the slots you are removing first.[/i][/color]
+
+[line]
+
+[color=#D4AF37][size=4][b]My Mods[/b][/size][/color]
+
+[color=#888888][i]These mods bundle the same [b]Windrose Equipment Slots Patcher[/b] for different slot types:[/i][/color]
+[list]
+[*][url=https://www.nexusmods.com/windrose/mods/___][b]More Ring and Necklace Slots[/b][/url] — expand ring and necklace slots on existing characters
+[*][url=https://www.nexusmods.com/windrose/mods/___][b]Double Glove Slots[/b][/url] — add a second glove slot on your characters
+[/list]
+
+If you've enjoyed this mod, want to see it maintained, or support any of my other projects, consider BuyMeACoffee!
+
+[center][url=https://buymeacoffee.com/michaelrooplall][img]https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png[/img][/url][/center]
+
+[line]
+
+[color=#D4AF37][size=4][b]Frequently Asked Questions[/b][/size][/color]
+
+[color=#D4AF37][size=3][b]How do I backup my saves?[/b][/size][/color]
+
+This tool automatically creates a backup before every patch and before every backup restore.
+
+If you want to manually backup your saves yourself, you can find them at:
+[code]%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\[/code]
+
+Backups for this tool live at:
+[code]%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Backups[/code]
+
+[line]
+
+[color=#D4AF37][size=3][b]My patch didn't stick / slots reverted after launching (Steam Cloud Sync)[/b][/size][/color]
+
+In some cases, [b]Steam Cloud Sync[/b] can overwrite your patched save with an older copy from the cloud when you launch Windrose. If your extra slots disappear after launching the game, try this:
+[list=1]
+[*]In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i]
+[*]If Steam asks about a conflict, choose [b]Use Local files[/b]
+[*]Re-run the patcher if needed
+[*]After verifying the patch worked, you can re-enable Steam Cloud Sync when you quit the game
+[/list]
+
+[line]
+
+[color=#D4AF37][size=3][b]How can I add more slots than the limit?[/b][/size][/color]
+
+Run the exe with the [font=monospace]--nocap[/font] flag. This removes the upper limits so you can set any value. [color=#E74C3C][b]Use with care.[/b][/color]
+
+[code]windrose_equipment_slots_patcher_v<version>.exe --nocap[/code]
+
+[line]
+
+[color=#D4AF37][size=3][b]How do I report a bug?[/b][/size][/color]
+
+If you have discovered any bugs, feel free to leave an issue on [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]GitHub[/b][/url], leave a comment on this Nexus mod page, or send an email to [url=mailto:contact@michaelrooplall.com]contact@michaelrooplall.com[/url].
+
+[line]
+
+[color=#D4AF37][size=3][b]How can I restore a pre-patched save / My save was corrupted[/b][/size][/color]
+
+If you load up the game after using the patcher and Windrose reports your save as corrupted, you can restore your backups by running the tool again.
+[list=1]
+[*]Select your character
+[*]Press [b]R[/b] to [b]Restore Backups[/b]
+[*]Select which backup you want to restore, if there are multiple
+[*]Launch the game and verify your save loads correctly
+[*]Your current non-working save is also backed up again, so no data is ever lost
+[/list]
+
+If you experience any issues with the save patcher, possibly after a game update, please file a [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]bug report[/b][/url]. If you can, also provide both or any of your saves (broken and working) — this can help narrow down any issues.
+
+[line]
+
+[color=#D4AF37][size=3][b]Undoing the patch / Reset to vanilla[/b][/size][/color]
+
+If you want to undo the patcher and remove the extra slots, re-run the patcher, select your character, and choose [b]Reset Slots to Vanilla[/b] (or [b]Restore Backup[/b] to roll back to an earlier snapshot).
+
+[color=#888888][i]If you try to delete a slot that still holds an item, the tool will by default stop you. This is so you can unequip / empty those slots in-game first. You can also confirm the destructive removal of the slot if you want to.[/i][/color]
+
+[line]
+
+[color=#D4AF37][size=3][b]Why isn't this just an installable mod?[/b][/size][/color]
+
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of tests, I was not able to successfully "inject" the slots via the modding framework for Unreal (UE4SS). If in the future anyone is able to accomplish this, I would love to know.
+
+For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.
+
+[line]
+
+[color=#D4AF37][size=4][b]Credits[/b][/size][/color]
+[list]
+[*][url=https://github.com/agreenbeen/windrose-save-tool][b]agreenbeen/windrose-save-tool[/b][/url] — [font=monospace]checkpoint_zip.py[/font] and RocksDB save-format documentation; the former rebuilds the game's [font=monospace]RocksDB_v2_Backups[/font] checkpoint ZIP after patching so changes persist on load, and the latter documented that Windrose requires uncompressed saves in RocksDB.
+[/list]
