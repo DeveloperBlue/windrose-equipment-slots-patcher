@@ -35,8 +35,8 @@ The extra slot allows you to have an additional 2-slot bonus effect, so you can 
 
 [color=#888888][i]These mods bundle the same [b]Windrose Equipment Slots Patcher[/b] for different slot types:[/i][/color]
 [list]
-[*][url=https://www.nexusmods.com/windrose/mods/___][b]More Ring and Necklace Slots[/b][/url] — expand ring and necklace slots on existing characters
-[*][url=https://www.nexusmods.com/windrose/mods/___][b]Double Glove Slots[/b][/url] — add a second glove slot on your characters
+[*][url=https://www.nexusmods.com/windrose/mods/472][b]More Ring and Necklace Slots[/b][/url] — expand ring and necklace slots on existing characters
+[*][url=https://www.nexusmods.com/windrose/mods/473][b]Double Glove Slots[/b][/url] — add a second glove slot for more set bonuses
 [/list]
 
 If you've enjoyed this mod, want to see it maintained, or support any of my other projects, consider BuyMeACoffee!

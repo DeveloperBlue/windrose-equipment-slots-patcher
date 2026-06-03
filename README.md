@@ -12,8 +12,8 @@ This tool updates your **existing** Windrose character saves so you can use more
 
 These Nexus mods bundle this patcher for specific slot types:
 
-- [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/___) — expand ring and necklace slots on existing characters
-- [Double Glove Slots](https://www.nexusmods.com/windrose/mods/___) — add a second glove slot on existing characters
+- [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/472) — expand ring and necklace slots on existing characters
+- [Double Glove Slots](https://www.nexusmods.com/windrose/mods/473) — add a second glove slot for more set bonuses
 
 ### Optional
 
@@ -133,7 +133,7 @@ If you load up the game after using the patcher and Winrose reports your save as
 4. Launch the game and verify your save loads correctly
 5. Your current non-working save is also backed up again, so no data is ever lost
 
-If you experience any issues with the save patcher, possibly after a game update, please file a bug report [](). If you can, also provide both or any of your saves (broken and working)- this can help me narrow down any issues.
+If you experience any issues with the save patcher, possibly after a game update, please file a [bug report](https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues). If you can, also provide both or any of your saves (broken and working)- this can help me narrow down any issues.
 
 ## Undoing the patch / Reset to vanilla
 
