@@ -6,10 +6,18 @@ This tool updates your **existing** Windrose character saves so you can use more
 
 **You do not need any other mods installed** to run this patcher. It works on its own. Close Windrose completely before you run it, and follow the on-screen steps.
 
-These Nexus mods may link to or bundle this patcher:
+## Relevant Mods
 
-- [Expanded Jewelry - More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/___)
-- [Two Glove Slots](https://www.nexusmods.com/windrose/mods/___)
+### My Mods
+
+These Nexus mods bundle this patcher for specific slot types:
+
+- [More Ring and Necklace Slots](https://www.nexusmods.com/windrose/mods/___) — expand ring and necklace slots on existing characters
+- [Double Glove Slots](https://www.nexusmods.com/windrose/mods/___) — add a second glove slot on existing characters
+
+### Optional
+
+- [UI Scale - HUD Scale by DaraTeaGod](https://www.nexusmods.com/windrose/mods/124) — recommended if extra slots push equipment UI off-screen at your resolution
 
 ## Slots Managed
 
