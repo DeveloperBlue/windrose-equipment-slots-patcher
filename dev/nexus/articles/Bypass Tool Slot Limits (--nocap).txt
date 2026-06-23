@@ -9,10 +9,10 @@ If you are on v.1.1.1 or newer, you can toggle no-cap mode right in the menu:
 [color=#D4AF37][size=3][b]In the patcher (recommended)[/b][/size][/color]
 
 [list=1]
-[*]Run the patcher and select your character.
-[*]On the character menu, press [b]S[/b] for [b]Settings[/b].
-[*]Press [b]N[/b] to [b]Enable no-cap mode[/b].
-[*]Press [b]B[/b] to go back, then edit your slot counts as usual.
+[*]Run the patcher and select your character.[/*]
+[*]On the character menu, press [b]S[/b] for [b]Settings[/b].[/*]
+[*]Press [b]N[/b] to [b]Enable no-cap mode[/b].[/*]
+[*]Press [b]B[/b] to go back, then edit your slot counts as usual.[/*]
 [/list]
 
 When no-cap mode is on, the character menu shows a yellow notice and slot upper limits are removed.
@@ -22,6 +22,8 @@ When no-cap mode is on, the character menu shows a yellow notice and slot upper 
 [color=#D4AF37][size=3][b]Alternative (v1.1.0 and older): launch with --nocap[/b][/size][/color]
 
 You can also start the tool with no-cap mode already enabled using the [font=monospace]--nocap[/font] flag.
+
+[b]NOTE: The instruction video shows the "More Rings and Necklaces" mod; they are the same tool with the same instructions.[/b]
 
 [i]You must unzip the file from Nexus first if you just downloaded it.[/i]
 
