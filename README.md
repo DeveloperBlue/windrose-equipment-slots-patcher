@@ -115,7 +115,16 @@ Depending on your monitor resolution, game resolution, and number of modified sl
 [UI Scale - HUD Scale by DaraTeaGod](https://www.nexusmods.com/windrose/mods/124)
 
 ## How can I add more slots than the limit?
-Run the exe with the ``--nocap`` flag. This removes the upper limits so you can set any value. **Use with care.**
+
+The patcher limits slot counts to the recommended ranges in the table above. To go higher, enable **no-cap mode** from the character menu:
+
+1. Select your character
+2. Press **S** for **Settings**
+3. Press **N** to **Enable no-cap mode**
+
+Be careful — the game may not react well to extreme values, and saves can be corrupted or crash. **Use at your own risk.**
+
+You can also launch with the ``--nocap`` flag to start with no-cap mode already enabled:
 
 ```bash
 ./windrose_equipment_slots_patcher_v<version> --nocap

@@ -298,6 +298,47 @@ def _print_actions(actions: list[tuple[str, str]],
         _print_menu_option(key, label, highlight=key.lower() in hi)
 
 
+def _show_nocap_warning() -> None:
+    page_header("No-cap mode enabled")
+    print("  Slot upper limits are disabled. You may set any value you wish.")
+    print(_c("  Be careful — the game may not react well to extreme values, and "
+             "saves can be corrupted or crash. Use at your own risk.", _YELLOW))
+    _pause()
+
+
+def settings_page() -> None:
+    """In-app settings. Currently toggles no-cap mode."""
+    global NOCAP
+    _nocap_risk = (
+        "  Be careful — the game may not react well to extreme values, and "
+        "saves can be corrupted or crash. Use at your own risk."
+    )
+    while True:
+        page_header("Settings")
+        if NOCAP:
+            status = _c("ON", _BOLD, _YELLOW)
+            print(f"  No-cap mode : {status}")
+            print(_c("  Slot upper limits are disabled.", _DIM))
+            print()
+            print(_c("  No-cap mode lets you set slot counts above the recommended limits.", _DIM))
+            print(_c(_nocap_risk, _YELLOW))
+        else:
+            status = _c("OFF", _DIM)
+            print(f"  No-cap mode : {status}")
+            print(_c("  Slot counts are limited to safe mod defaults.", _DIM))
+            print()
+            print(_c("  No-cap mode lets you set slot counts above the recommended limits.", _DIM))
+            print(_c(_nocap_risk, _DIM))
+        print()
+        nocap_action = "Disable no-cap mode" if NOCAP else "Enable no-cap mode"
+        _print_actions([("n", nocap_action), ("b", "Back")])
+        choice = menu_prompt(0, [("n", nocap_action), ("b", "Back")])
+        if choice == "b":
+            return
+        if choice == "n":
+            NOCAP = not NOCAP
+
+
 def _pause(msg: str = "Press any key to continue...") -> None:
     print()
     print(_c("  " + msg, _DIM))
@@ -1519,15 +1560,20 @@ def character_menu(folder: str, *, can_back: bool) -> str:
         if level is not None:
             print(f"  Level     : {level}")
         print()
+        if NOCAP:
+            print(_c("  No-cap mode is ON — slot upper limits are disabled.", _YELLOW))
+            print()
         print("  " + _c("Current slots", _BOLD))
         print_counts(counts)
         print()
         _print_menu_option("1", "Edit number of slots", highlight=True)
         _print_menu_option("2", "Reset slots to vanilla")
         _print_menu_option("3", "Restore backup")
+        print()
         actions: list[tuple[str, str]] = []
         if can_back:
             actions.append(("b", "Back"))
+        actions.append(("s", "Settings"))
         actions.append(("q", "Quit"))
         _print_actions(actions)
 
@@ -1536,6 +1582,9 @@ def character_menu(folder: str, *, can_back: bool) -> str:
             return "quit"
         if choice == "b":
             return "back"
+        if choice == "s":
+            settings_page()
+            continue
         if choice == "1":
             if edit_slots_page(folder, value, name) == "quit":
                 return "quit"
@@ -1562,10 +1611,13 @@ def select_steam(profiles_root: Path) -> tuple[Path, bool] | None:
         for i, d in enumerate(steam_dirs, 1):
             print(f"    [{_c(str(i), _BOLD)}] {d.name}")
         print()
-        _print_actions([("q", "Quit")])
-        choice = menu_prompt(len(steam_dirs), [("q", "Quit")])
+        _print_actions([("s", "Settings"), ("q", "Quit")])
+        choice = menu_prompt(len(steam_dirs), [("s", "Settings"), ("q", "Quit")])
         if choice == "q":
             return None
+        if choice == "s":
+            settings_page()
+            continue
         return steam_dirs[int(choice) - 1], True
 
 
@@ -1629,11 +1681,7 @@ def run_app(argv: list[str]) -> None:
     _init_io()
 
     if NOCAP:
-        page_header("No-cap mode enabled")
-        print("  Slot upper limits are disabled. You may set any value you wish.")
-        print(_c("  Values far above what a mod expects can corrupt or crash a "
-                 "save — use with care.", _YELLOW))
-        _pause()
+        _show_nocap_warning()
 
     if path_arg:
         if not _is_character_db_dir(Path(path_arg)):

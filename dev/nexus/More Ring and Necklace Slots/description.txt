@@ -95,8 +95,16 @@ Consider using this mod to tweak the UI scale:
 
 [color=#D4AF37][size=3][b]How can I add more slots than the limit?[/b][/size][/color]
 
-Run the exe with the [font=monospace]--nocap[/font] flag. This removes the upper limits so you can set any value. [color=#E74C3C][b]Use with care.[/b][/color]
+By default, the patcher limits slot counts to the recommended ranges (for example, 1–10 rings and necklaces). To go higher, enable [b]no-cap mode[/b] from the character menu:
+[list=1]
+[*]Select your character
+[*]Press [b]S[/b] for [b]Settings[/b]
+[*]Press [b]N[/b] to [b]Enable no-cap mode[/b]
+[/list]
 
+Be careful — the game may not react well to extreme values, and saves can be corrupted or crash. [color=#E74C3C][b]Use at your own risk.[/b][/color]
+
+Alternatively, run the exe with the [font=monospace]--nocap[/font] flag to start with no-cap mode already enabled:
 [code]windrose_equipment_slots_patcher_v<version>.exe --nocap[/code]
 
 [line]
