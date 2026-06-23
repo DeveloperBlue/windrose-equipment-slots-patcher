@@ -1,0 +1,88 @@
+[color=#D4AF37][size=4][b]Frequently Asked Questions[/b][/size][/color]
+
+[color=#D4AF37][size=3][b]How do I backup my saves?[/b][/size][/color]
+
+This tool automatically creates a backup before every patch and before every backup restore.
+
+If you want to manually backup your saves yourself, you can find them at:
+[code]%LOCALAPPDATA%\R5\Saved\SaveProfiles\<STEAM_ID>\[/code]
+
+Backups for this tool live at:
+[code]%LOCALAPPDATA%\WindroseEquipmentSlotsPatcher\Backups[/code]
+
+[line]
+
+[color=#D4AF37][size=3][b]Save profiles not found / opening the tool manually[/b][/size][/color]
+
+If the patcher can't find your saves automatically, drag a folder onto the .exe instead of double-clicking it.
+
+Find your saves in File Explorer. Open your Steam ID folder, then go to [b]RocksDB_v2[/b] → [b]0.10.0[/b] → [b]Players[/b].
+
+Drag the [b]Players[/b] folder onto the patcher's .exe and pick your character from the list.
+
+See the [b]Steam Profile Not Found[/b] article on this mod page for screenshots and step-by-step help.
+
+[line]
+
+[color=#D4AF37][size=3][b]My patch didn't stick / slots reverted after launching (Steam Cloud Sync)[/b][/size][/color]
+
+In some cases, [b]Steam Cloud Sync[/b] can overwrite your patched save with an older copy from the cloud when you launch Windrose. If your extra slots disappear after launching the game, try this:
+[list=1]
+[*]In [b]Steam[/b] → right-click [b]Windrose[/b] → [b]Properties[/b] → [b]General[/b] → uncheck [i]"Keep game saves in the Steam Cloud"[/i][/*]
+[*]If Steam asks about a conflict, choose [b]Use Local files[/b][/*]
+[*]Re-run the patcher if needed[/*]
+[*]After verifying the patch worked, you can re-enable Steam Cloud Sync when you quit the game[/*]
+[/list]
+
+[line]
+
+[color=#D4AF37][size=3][b]How can I add more slots than the limit?[/b][/size][/color]
+
+By default, the patcher limits slot counts to the recommended ranges. To go higher, enable [b]no-cap mode[/b] from the character menu:
+[list=1]
+[*]Select your character
+[*]Press [b]S[/b] for [b]Settings[/b]
+[*]Press [b]N[/b] to [b]Enable no-cap mode[/b]
+[/list]
+
+Be careful — the game may not react well to extreme values, and saves can be corrupted or crash. [color=#E74C3C][b]Use at your own risk.[/b][/color]
+
+Alternatively, run the exe with the [font=monospace]--nocap[/font] flag to start with no-cap mode already enabled:
+[code]windrose_equipment_slots_patcher_v<version>.exe --nocap[/code]
+
+[line]
+
+[color=#D4AF37][size=3][b]How do I report a bug?[/b][/size][/color]
+
+If you have discovered any bugs, feel free to leave an issue on [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]GitHub[/b][/url], leave a comment on this Nexus mod page, or send an email to [email=contact@michaelrooplall.com]contact@michaelrooplall.com[/email].
+
+[line]
+
+[color=#D4AF37][size=3][b]How can I restore a pre-patched save / My save was corrupted[/b][/size][/color]
+
+If you load up the game after using the patcher and Windrose reports your save as corrupted, you can restore your backups by running the tool again.
+[list=1]
+[*]Select your character[/*]
+[*]Press [b]R[/b] to [b]Restore Backups[/b][/*]
+[*]Select which backup you want to restore, if there are multiple[/*]
+[*]Launch the game and verify your save loads correctly[/*]
+[*]Your current non-working save is also backed up again, so no data is ever lost[/*]
+[/list]
+
+If you experience any issues with the save patcher, possibly after a game update, please file a [url=https://github.com/DeveloperBlue/windrose-equipment-slots-patcher/issues][b]bug report[/b][/url]. If you can, also provide both or any of your saves (broken and working) — this can help narrow down any issues.
+
+[line]
+
+[color=#D4AF37][size=3][b]Undoing the patch / Reset to vanilla[/b][/size][/color]
+
+If you want to undo the patcher and remove the extra slots, re-run the patcher, select your character, and choose [b]Reset Slots to Vanilla[/b] (or [b]Restore Backup[/b] to roll back to an earlier snapshot).
+
+[color=#888888][i]If you try to delete a slot that still holds an item, the tool will by default stop you. This is so you can unequip / empty those slots in-game first. You can also confirm the destructive removal of the slot if you want to.[/i][/color]
+
+[line]
+
+[color=#D4AF37][b]Why isn't this just an installable mod?[/b][/color]
+
+After about 40+ hours of digging into the game's file dumps and running dozens and dozens of tests, I was not able to successfully "inject" the slots via the modding framework for Unreal (UE4SS). If in the future anyone is able to accomplish this, I would love to know.
+
+For now, an executable tool that patches your saves is the best (and only) way I was able to release this mod.

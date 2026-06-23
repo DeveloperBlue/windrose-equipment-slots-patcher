@@ -1,0 +1,56 @@
+If you want to bypass the limits set by the tool (e.g. more than 10 rings, more than 10 necklaces, more than 2 gloves), enable [b]no-cap mode[/b].
+
+Be careful — the game may not react well to extreme values, and saves can be corrupted or crash. [color=#E74C3C][b]Use at your own risk.[/b][/color]
+
+If you are on v.1.1.1 or newer, you can toggle no-cap mode right in the menu:
+
+[line]
+
+[color=#D4AF37][size=3][b]In the patcher (recommended)[/b][/size][/color]
+
+[list=1]
+[*]Run the patcher and select your character.
+[*]On the character menu, press [b]S[/b] for [b]Settings[/b].
+[*]Press [b]N[/b] to [b]Enable no-cap mode[/b].
+[*]Press [b]B[/b] to go back, then edit your slot counts as usual.
+[/list]
+
+When no-cap mode is on, the character menu shows a yellow notice and slot upper limits are removed.
+
+[line]
+
+[color=#D4AF37][size=3][b]Alternative (v1.1.0 and older): launch with --nocap[/b][/size][/color]
+
+You can also start the tool with no-cap mode already enabled using the [font=monospace]--nocap[/font] flag.
+
+[i]You must unzip the file from Nexus first if you just downloaded it.[/i]
+
+1. Open the mod folder
+2. Click the address bar at the top so you can edit the text
+3. Type "cmd " at the [b]beginning[/b] of the address [b]with a space[/b].
+
+[img]https://i.imgur.com/B3bVu14.gif[/img]
+
+This should open a command prompt window. If it did not, go back and try again.
+
+4. Type in (or copy and paste) the following and press [b]Enter[/b].
+[code]windrose_equipment_slots_patcher_v1.1.0.exe --nocap[/code]
+
+That should [u]match the name of the exe in the mod folder[/u] you downloaded and unzipped. [b]Double check the version number at the end.[/b]
+
+[img]https://i.imgur.com/GrBwp8E.gif[/img]
+
+You should now be in [i]no-cap[/i] mode.
+
+[line]
+
+[color=#D4AF37][size=3][b]No-cap with a dragged save folder[/b][/size][/color]
+
+If the patcher also cannot find your saves automatically, you can pass both [font=monospace]--nocap[/font] and a save folder path from a command prompt:
+[code]windrose_equipment_slots_patcher_v1.1.0.exe --nocap "C:\Users\USER\AppData\Local\R5\Saved\SaveProfiles\STEAM_ID\RocksDB_v2\0.10.0\Players"[/code]
+
+Replace the path with any folder along your save path — [b]SaveProfiles[/b], your [b]Steam ID[/b] folder, [b]RocksDB_v2[/b], a [b]version[/b] folder, [b]Players[/b], or a specific [b]character folder[/b]. See the [b]Steam Profile Not Found[/b] article for details.
+
+[line]
+
+If you were not able to get to this mode, try going over the instructions again. Make sure you typed everything correctly. Watch the included videos carefully if you need help. For the in-app method, use [b]Settings[/b] on the character menu instead of the command line.

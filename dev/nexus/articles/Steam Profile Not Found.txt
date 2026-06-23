@@ -1,0 +1,32 @@
+If you're using this tool and run into the "Save profiles not found" error (or the tool cannot find your Steam account automatically), you can open the patcher by dragging a folder from your save path directly onto the tool executable.
+
+1. [b]Find your character saves[/b]
+
+Figure out where [i]your [/i]game keeps its saves.
+
+Steam uses this location:
+[code]C:\Users\USER\AppData\Local\R5\Saved\SaveProfiles\STEAM_ID\RocksDB_v2\0.10.0\Players[/code]
+
+
+[quote]You must use the saves in the [b]RocksDB_v2[/b] folder.
+Do not use the [b]Rocks_DB[/b] (without the [b]_v2[/b]) folder. [/quote]
+
+Inside your Players folder, you will see folder(s) for each character you have created.
+
+[quote]They are usually named something random like a bunch of letters and numbers.
+I have three characters, and one of my folders is named "F997907545014FA9A38868A6EE7F7494" for example.[/quote]
+
+2. [b]Drag a folder onto the exe[/b]
+
+Drag [b]any folder[/b] along that save path onto the tool's .exe you just downloaded. All of these work:
+
+[list]
+[*][b]SaveProfiles[/b] — pick your Steam account, then your character[/*]
+[*][b]Your Steam ID folder[/b] (e.g. 76561198...) — opens the character picker[/*]
+[*][b]RocksDB_v2[/b], the version folder (e.g. [b]0.10.0[/b]), or [b]Players[/b] — opens the character picker for that account[/*]
+[*]A specific [b]character folder[/b] inside Players — opens that character directly[/*]
+[/list]
+
+[quote]If you pick the wrong character from the list, press [b]B[/b] to go back, or quit the application and try again.[/quote]
+
+[img]https://i.imgur.com/KHUi2f6.gif[/img]
