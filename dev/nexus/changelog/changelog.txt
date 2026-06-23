@@ -1,0 +1,6 @@
+v1.1.1 — June 23, 2026
+
+[list]
+[*][b]No-cap mode[/b] — Bypass the patcher's slot upper limits (e.g. more than 10 rings). Toggle it from the character menu ([b]S[/b] → Settings → [b]N[/b] Enable no-cap mode)
+[*][b]Drag-and-drop save folders[/b] — If the patcher cannot find your Steam profile automatically, drag any folder along your save path onto the .exe (SaveProfiles, your Steam ID folder, RocksDB_v2, a version folder, Players, or a specific character folder).
+[/list]

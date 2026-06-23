@@ -1,4 +1,4 @@
-# Windrose Equipment Slots Patcher - v1.1.0
+# Windrose Equipment Slots Patcher - v1.1.1
 
 By **Michael Rooplall / DeveloperBlue** — [GitHub repository](https://github.com/DeveloperBlue/windrose-equipment-slots-patcher) · [Nexus profile](https://www.nexusmods.com/profile/DeveloperBlue)
 
