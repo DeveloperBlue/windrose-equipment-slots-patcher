@@ -1042,6 +1042,57 @@ def _is_character_db_dir(path: Path) -> bool:
     return path.is_dir() and (path / "CURRENT").is_file()
 
 
+def _is_steam_profile_dir(path: Path) -> bool:
+    return path.is_dir() and (path / _ROCKSDB_V2).is_dir()
+
+
+def _save_profiles_ancestor(path: Path) -> Path | None:
+    """Return R5/Saved/SaveProfiles root when path lies under it."""
+    path = path.resolve()
+    for ancestor in [path, *path.parents]:
+        if ancestor.name != "SaveProfiles":
+            continue
+        saved = ancestor.parent
+        if saved.name == "Saved" and saved.parent.name == "R5":
+            return ancestor
+    return None
+
+
+def _steam_profile_from_path(path: Path) -> Path | None:
+    path = path.resolve()
+    for ancestor in [path, *path.parents]:
+        if _is_steam_profile_dir(ancestor):
+            return ancestor
+    return None
+
+
+def _resolve_dropped_save_path(path: Path) -> tuple[str, Path] | None:
+    """Map a drag-and-drop folder to character, steam, or SaveProfiles scope."""
+    if not path.exists():
+        return None
+    path = path.resolve()
+
+    if _is_character_db_dir(path):
+        return "character", path
+
+    profiles_root = _save_profiles_ancestor(path)
+    if profiles_root is None:
+        return None
+
+    if path == profiles_root:
+        return "profiles", profiles_root
+
+    steam = _steam_profile_from_path(path)
+    if steam is not None:
+        try:
+            steam.relative_to(profiles_root)
+        except ValueError:
+            return None
+        return "steam", steam
+
+    return None
+
+
 def _list_steam_profile_dirs(profiles_root: Path) -> list[Path]:
     out: list[Path] = []
     for entry in sorted(profiles_root.iterdir()):
@@ -1684,14 +1735,48 @@ def run_app(argv: list[str]) -> None:
         _show_nocap_warning()
 
     if path_arg:
-        if not _is_character_db_dir(Path(path_arg)):
-            page_header("Invalid character folder")
-            print(f"  '{path_arg}' is not a Windrose character save folder "
-                  f"(no CURRENT file).")
+        resolved = _resolve_dropped_save_path(Path(path_arg))
+        if resolved is None:
+            page_header("Invalid save folder")
+            print(f"  '{path_arg}' is not a Windrose save profile folder.")
+            print(f"  Expected somewhere under ...\\{_SAVE_PROFILES_SUFFIX}"
+                  f"\\<Steam ID>\\{_ROCKSDB_V2}\\...")
             _pause()
             return
-        character_menu(path_arg, can_back=False)
-        return
+
+        kind, target = resolved
+        if kind == "character":
+            character_menu(path_arg, can_back=False)
+            return
+
+        if kind == "steam":
+            while True:
+                sel = select_character(target, can_back=False)
+                if sel == "quit":
+                    return
+                while True:
+                    result = character_menu(str(sel), can_back=True)
+                    if result == "quit":
+                        return
+                    if result == "back":
+                        break
+            return
+
+        while True:
+            steam_result = select_steam(target)
+            if steam_result is None:
+                return
+            steam, had_multiple = steam_result
+            while True:
+                sel = select_character(steam, can_back=had_multiple)
+                if sel == "quit":
+                    return
+                if sel == "back":
+                    break
+                if character_menu(str(sel), can_back=True) == "quit":
+                    return
+            if not had_multiple:
+                return
 
     profiles_root = _save_profiles_root()
     if profiles_root is None:
@@ -1699,7 +1784,7 @@ def run_app(argv: list[str]) -> None:
         print("  Could not find Windrose save profiles under %LOCALAPPDATA%.")
         print(f"  Expected: ...\\{_SAVE_PROFILES_SUFFIX}")
         print()
-        print("  You can also drag a character save folder onto the executable.")
+        print("  You can also drag a save profile folder onto the executable.")
         _pause()
         return
 
